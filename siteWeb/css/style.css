@@ -1,3 +1,4 @@
-#map { width: 700px; height: 700px; }
-
-#containeurMapMenuDeroulant{display: flex; flex-direction: row}
+#map {
+    width: 700px;
+    height: 700px;
+}
