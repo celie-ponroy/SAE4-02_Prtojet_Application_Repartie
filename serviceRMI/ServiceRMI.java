@@ -1,5 +1,3 @@
-import org.json.HTTP;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.URI;
@@ -11,7 +9,7 @@ import java.rmi.Remote;
 
 
 public class ServiceRMI implements InterfaceServiceRMI {
-    public JSONObject lancerRequete() throws IOException, InterruptedException {
+    public String lancerRequete() throws IOException, InterruptedException {
         System.out.println("debut");
         
         //creer un http client
@@ -24,9 +22,7 @@ public class ServiceRMI implements InterfaceServiceRMI {
         HttpResponse<String> resp = client.send(request, BodyHandlers.ofString());
 
         System.out.println(resp.body());
-        //on créé le json pour le return
-        JSONObject json = new JSONObject(resp.body());
-        System.out.println(json);
-        return json;
+
+        return resp.body();
     }
 }
