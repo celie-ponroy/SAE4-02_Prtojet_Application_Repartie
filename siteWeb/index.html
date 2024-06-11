@@ -3,9 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+          crossorigin=""/>
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Script pour reconnaitre les template -->
+    <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
     <title>Projet Application Répartie</title>
 </head>
+
 <body>
-    
+<div id="map"></div>
+<div id="stationInfo"></div>
+
+<!-- Script Leaflet CSS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+        crossorigin="" defer></script>
+<!-- Script Template -->
+<script id="stationTemplate" type="text/x-handlebars-template">
+    <h2>Stations Vlib: </h2>
+    <div>
+        <h4>{{this.name}} :</h4>
+        <div>
+            <img src="img/bike.svg" alt="vélo" height="15" width="15"/>
+            {{this.nbVelo}}
+            <img src="img/parking.svg" alt="docks" height="15" width="15"/>
+            {{this.nbDock}}
+        </div>
+        <div><p>Address : {{this.address}}</p></div>
+    </div>
+</script>
+<script src="js/index.js" type="module"></script>
+
 </body>
 </html>
