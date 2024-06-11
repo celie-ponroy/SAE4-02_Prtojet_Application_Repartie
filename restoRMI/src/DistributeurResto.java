@@ -1,7 +1,6 @@
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
-import java.sql.SQLException;
 
 public class DistributeurResto {
     public static void main(String[] args) {
@@ -16,13 +15,13 @@ public class DistributeurResto {
         }
 
         try {
-            Serveur distributeur = new Serveur();
-            InterfaceResto rd = (InterfaceResto) UnicastRemoteObject.exportObject(distributeur, 0);
+            InterfaceResto service = new Serveur();
+            InterfaceResto rd = (InterfaceResto) UnicastRemoteObject.exportObject(service, 0);
 
             Registry reg = LocateRegistry.getRegistry(host, port);
             reg.rebind("DistributeurResto", rd);
 
-            System.out.println("Serveur RestoRMI pret (connecte a : + " + host + " sur le port " + port + ")");
+            System.out.println("Serveur RestoRMI pret (connecte a : " + host + " sur le port " + port + ")");
         } catch (java.rmi.ConnectException e) {
             System.out.println("Serveur RMI non accessible : " + e.getMessage());
         } catch (java.rmi.UnmarshalException e) {

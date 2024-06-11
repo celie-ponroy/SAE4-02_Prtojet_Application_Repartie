@@ -15,7 +15,7 @@ public class Serveur implements InterfaceResto {
      * @param yGPS     Coordonnee GPS en y
      * @return Un objet JSON contenant le resultat de la requete
      */
-    public JSONObject createRestaurant(String nomResto, String adresse, int nbPlaces, double xGPS, double yGPS) {
+    public String createRestaurant(String nomResto, String adresse, int nbPlaces, double xGPS, double yGPS) {
         JSONObject res = new JSONObject();
         try {
             PreparedStatement statement = DBConnection.getInstance().prepareStatement("""
@@ -41,19 +41,20 @@ public class Serveur implements InterfaceResto {
                 res.put("success", "false");
             }
             res.put("error", "");
-            return res;
+            return res.toString();
         } catch (SQLException e) {
             e.printStackTrace();
-            return res.put("success", "false").put("error", e.getMessage());
+            return res.put("success", "false").put("error", e.getMessage()).toString();
         }
     }
 
     /**
      * Permet de supprimer un restaurant de la base de donnees
+     *
      * @param numResto Numero du restaurant
-     *                 @return Un objet JSON contenant le resultat de la requete
+     * @return Un objet JSON contenant le resultat de la requete
      */
-    public JSONObject deleteRestaurant(int numResto) {
+    public String deleteRestaurant(int numResto) {
         JSONObject res = new JSONObject();
         try {
             PreparedStatement statement = DBConnection.getInstance().prepareStatement("""
@@ -71,10 +72,10 @@ public class Serveur implements InterfaceResto {
                 res.put("success", "false");
             }
             res.put("error", "");
-            return res;
+            return res.toString();
         } catch (SQLException e) {
             e.printStackTrace();
-            return res.put("success", "false").put("error", e.getMessage());
+            return res.put("success", "false").put("error", e.getMessage()).toString();
         }
     }
 
@@ -89,20 +90,20 @@ public class Serveur implements InterfaceResto {
      * @param dateRes       Date de la reservation
      * @return Un objet JSON contenant le resultat de la requete
      */
-    public JSONObject setReservation(String nomClient, String prenomClient, int nbConvives, String numTel, int numRestaurant, String dateRes) {
+    public String setReservation(String nomClient, String prenomClient, int nbConvives, String numTel, int numRestaurant, String dateRes) {
         JSONObject res = new JSONObject();
         try {
-            JSONObject restaurantReservations = getRestaurantNbReservations(numRestaurant, dateRes);
+            JSONObject restaurantReservations = new JSONObject(this.getRestaurantNbReservations(numRestaurant, dateRes));
 
             if (!restaurantReservations.getString("success").equals("true")) {
-                return res.put("success", "false").put("error", restaurantReservations.getString("error"));
+                return res.put("success", "false").put("error", restaurantReservations.getString("error")).toString();
             }
 
             int totalReservations = restaurantReservations.getInt("nbReservations");
             int nbPlaces = restaurantReservations.getInt("nbPlaces");
 
             if (totalReservations + nbConvives > nbPlaces) {
-                return res.put("success", "false").put("error", "Not enough places in the restaurant");
+                return res.put("success", "false").put("error", "Not enough places in the restaurant").toString();
             }
 
             PreparedStatement statement = DBConnection.getInstance().prepareStatement("""
@@ -125,10 +126,10 @@ public class Serveur implements InterfaceResto {
                 res.put("success", "false");
             }
             res.put("error", "");
-            return res;
+            return res.toString();
         } catch (SQLException e) {
             e.printStackTrace();
-            return res.put("success", "false").put("error", e.getMessage());
+            return res.put("success", "false").put("error", e.getMessage()).toString();
         }
     }
 
@@ -137,7 +138,7 @@ public class Serveur implements InterfaceResto {
      *
      * @return Un objet JSON contenant le resultat de la requete
      */
-    public JSONObject getRestaurants() {
+    public String getRestaurants() {
         JSONObject res = new JSONObject();
         try {
             Statement statement = DBConnection.getInstance().createStatement();
@@ -160,10 +161,10 @@ public class Serveur implements InterfaceResto {
                 res.put("success", "true");
             }
             res.put("error", "");
-            return res;
+            return res.toString();
         } catch (SQLException e) {
             e.printStackTrace();
-            return res.put("success", "false").put("error", e.getMessage());
+            return res.put("success", "false").put("error", e.getMessage()).toString();
         }
     }
 
@@ -175,7 +176,7 @@ public class Serveur implements InterfaceResto {
      * @param rayon Rayon de recherche
      * @return Un objet JSON contenant le resultat de la requete
      */
-    public JSONObject getRestaurantsByPos(double xGPS, double yGPS, int rayon) {
+    public String getRestaurantsByPos(double xGPS, double yGPS, int rayon) {
         JSONObject res = new JSONObject();
         try {
             PreparedStatement statement = DBConnection.getInstance().prepareStatement("""
@@ -206,10 +207,10 @@ public class Serveur implements InterfaceResto {
                 res.put("success", "true");
             }
             res.put("error", "");
-            return res;
+            return res.toString();
         } catch (SQLException e) {
             e.printStackTrace();
-            return res.put("success", "false").put("error", e.getMessage());
+            return res.put("success", "false").put("error", e.getMessage()).toString();
         }
     }
 
@@ -220,7 +221,7 @@ public class Serveur implements InterfaceResto {
      * @param dateRes       Date de la reservation
      * @return Un objet JSON contenant le resultat de la requete
      */
-    public JSONObject getRestaurantNbReservations(int numRestaurant, String dateRes) {
+    public String getRestaurantNbReservations(int numRestaurant, String dateRes) {
         JSONObject res = new JSONObject();
         try {
             PreparedStatement statementCheck = DBConnection.getInstance().prepareStatement("""
@@ -231,7 +232,7 @@ public class Serveur implements InterfaceResto {
 
             ResultSet resultSet = statementCheck.executeQuery();
             if (!resultSet.next()) {
-                return res.put("success", "false").put("error", "Restaurant does not exist");
+                return res.put("success", "false").put("error", "Restaurant does not exist").toString();
             }
 
             int nbPlaces = resultSet.getInt("NBPLACES");
@@ -250,10 +251,10 @@ public class Serveur implements InterfaceResto {
             res.put("nbPlaces", nbPlaces);
             res.put("success", "true");
 
-            return res;
+            return res.toString();
         } catch (SQLException e) {
             e.printStackTrace();
-            return res.put("success", "false").put("error", e.getMessage());
+            return res.put("success", "false").put("error", e.getMessage()).toString();
         }
     }
 }

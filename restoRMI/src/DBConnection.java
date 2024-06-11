@@ -23,6 +23,7 @@ public class DBConnection {
         Connection connection = DriverManager.getConnection(Credentials.APIENDPOINT, Credentials.USERNAME, Credentials.PASSWORD);
         connection.setAutoCommit(false);
         instance = connection;
+        System.out.println("Connected to the database");
     }
 
     /**

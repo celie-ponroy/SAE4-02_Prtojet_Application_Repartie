@@ -1,6 +1,7 @@
 import org.json.JSONObject;
 
 import java.rmi.Remote;
+import java.rmi.RemoteException;
 
 public interface InterfaceResto extends Remote {
     /**
@@ -13,14 +14,14 @@ public interface InterfaceResto extends Remote {
      * @param yGPS     Coordonnee GPS en y
      * @return Un objet JSON contenant le resultat de la requete
      */
-    JSONObject createRestaurant(String nomResto, String adresse, int nbPlaces, double xGPS, double yGPS);
+    String createRestaurant(String nomResto, String adresse, int nbPlaces, double xGPS, double yGPS) throws RemoteException;
 
     /**
      * Permet de supprimer un restaurant de la base de donnees
      * @param numResto Numero du restaurant
      *                 @return Un objet JSON contenant le resultat de la requete
      */
-    JSONObject deleteRestaurant(int numResto);
+    String deleteRestaurant(int numResto) throws RemoteException;
 
     /**
      * Permet de creer une reservation pour un restaurant
@@ -33,14 +34,14 @@ public interface InterfaceResto extends Remote {
      * @param dateRes       Date de la reservation
      * @return Un objet JSON contenant le resultat de la requete
      */
-    JSONObject setReservation(String nomClient, String prenomClient, int nbConvives, String numTel, int numRestaurant, String dateRes);
+    String setReservation(String nomClient, String prenomClient, int nbConvives, String numTel, int numRestaurant, String dateRes) throws RemoteException;
 
     /**
      * Permet de recuperer les restaurants de la base de donnees
      *
      * @return Un objet JSON contenant le resultat de la requete
      */
-    JSONObject getRestaurants();
+    String getRestaurants() throws RemoteException;
 
     /**
      * Permet de recuperer les restaurants proches d'une position GPS
@@ -50,7 +51,7 @@ public interface InterfaceResto extends Remote {
      * @param rayon Rayon de recherche
      * @return Un objet JSON contenant le resultat de la requete
      */
-    JSONObject getRestaurantsByPos(double xGPS, double yGPS, int rayon);
+    String getRestaurantsByPos(double xGPS, double yGPS, int rayon) throws RemoteException;
 
     /**
      * Permet de recuperer les reservations d'un restaurant
@@ -59,5 +60,5 @@ public interface InterfaceResto extends Remote {
      * @param dateRes       Date de la reservation
      * @return Un objet JSON contenant le resultat de la requete
      */
-    JSONObject getRestaurantNbReservations(int numRestaurant, String dateRes);
+    String getRestaurantNbReservations(int numRestaurant, String dateRes) throws RemoteException;
 }
