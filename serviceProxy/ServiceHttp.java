@@ -4,6 +4,7 @@ import com.sun.net.httpserver.HttpServer;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -21,7 +22,7 @@ public class ServiceHttp {
                 @Override
                 public void handle(HttpExchange exchange) throws IOException {
                     try {
-                        demanderServiceTrafic();
+                        demanderServiceTrafic(exchange);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -32,17 +33,29 @@ public class ServiceHttp {
                     @Override
                     public void handle(HttpExchange exchange) throws IOException {
                         try {
-                            demanderServiceResto();
+                            demanderServiceResto(exchange);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
                     }
                 });
     }
+
+    private void sendJsonResponse(HttpExchange exchange, String jsonResponse) throws IOException {
+        exchange.getResponseHeaders().set("Content-Type", "application/json; charset=UTF-8");
+        exchange.sendResponseHeaders(200, jsonResponse.getBytes().length);
+        OutputStream os = exchange.getResponseBody();
+        os.write(jsonResponse.getBytes());
+        os.close();
+    }
+
+
+
     //service resto(/resto) + service trafic (/trafic)
-    void demanderServiceTrafic() throws IOException, InterruptedException {
+    void demanderServiceTrafic(HttpExchange exchange) throws IOException, InterruptedException {
         String response = this.service.lancerRequete();
         JSONObject obj = new JSONObject(response);
+        sendJsonResponse(exchange, obj.toString());
         System.out.println(obj);
 
         //httpServeur qui utilise ^
@@ -52,7 +65,7 @@ public class ServiceHttp {
         System.out.println("b::::"+b);
          */
     }
-    void demanderServiceResto() throws IOException, InterruptedException {
+    void demanderServiceResto(HttpExchange exchange) throws IOException, InterruptedException {
         //changer apres merge
         //String response = this.service.lancerRequete();
         //JSONObject obj = new JSONObject(response);
