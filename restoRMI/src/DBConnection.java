@@ -20,7 +20,7 @@ public class DBConnection {
      */
     DBConnection() throws SQLException, ClassNotFoundException {
         Class.forName("oracle.jdbc.driver.OracleDriver");
-        Connection connection = DriverManager.getConnection(Credentials.APIENDPOINT + ":infodb", Credentials.USERNAME, Credentials.PASSWORD);
+        Connection connection = DriverManager.getConnection(Credentials.APIENDPOINT, Credentials.USERNAME, Credentials.PASSWORD);
         connection.setAutoCommit(false);
         instance = connection;
     }

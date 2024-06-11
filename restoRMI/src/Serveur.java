@@ -19,7 +19,7 @@ public class Serveur implements InterfaceResto {
         JSONObject res = new JSONObject();
         try {
             PreparedStatement statement = DBConnection.getInstance().prepareStatement("""
-                    INSERT INTO RESTAURANT (NOMRESTO, ADRESSE, NBPLACES, XGPS, YGPS) VALUES (?, ?, ?, ?)
+                    INSERT INTO RESTAURANT (NOMRESTO, ADRESSE, NBPLACES, XGPS, YGPS) VALUES (?, ?, ?, ?, ?)
                     """);
 
             statement.setString(1, nomResto);
@@ -28,10 +28,45 @@ public class Serveur implements InterfaceResto {
             statement.setDouble(4, xGPS);
             statement.setDouble(5, yGPS);
 
+            if (!(6.100 < xGPS && xGPS < 6.300 && 49.100 < yGPS && yGPS < 49.300)) {
+                res.put("error", "Coordinates are not in the allowed range");
+            }
+
             int rowsAffected = statement.executeUpdate();
 
             if (rowsAffected > 0) {
                 res.put("success", "true");
+                DBConnection.getInstance().commit();
+            } else {
+                res.put("success", "false");
+            }
+            res.put("error", "");
+            return res;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return res.put("success", "false").put("error", e.getMessage());
+        }
+    }
+
+    /**
+     * Permet de supprimer un restaurant de la base de donnees
+     * @param numResto Numero du restaurant
+     *                 @return Un objet JSON contenant le resultat de la requete
+     */
+    public JSONObject deleteRestaurant(int numResto) {
+        JSONObject res = new JSONObject();
+        try {
+            PreparedStatement statement = DBConnection.getInstance().prepareStatement("""
+                    DELETE FROM RESTAURANT WHERE NUMRESTO = ?
+                    """);
+
+            statement.setInt(1, numResto);
+
+            int rowsAffected = statement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                res.put("success", "true");
+                DBConnection.getInstance().commit();
             } else {
                 res.put("success", "false");
             }
@@ -85,6 +120,7 @@ public class Serveur implements InterfaceResto {
 
             if (rowsAffected > 0) {
                 res.put("success", "true");
+                DBConnection.getInstance().commit();
             } else {
                 res.put("success", "false");
             }
@@ -134,8 +170,8 @@ public class Serveur implements InterfaceResto {
     /**
      * Permet de recuperer les restaurants proches d'une position GPS
      *
-     * @param xGPS Coordonnee GPS en x
-     * @param yGPS Coordonnee GPS en y
+     * @param xGPS  Coordonnee GPS en x
+     * @param yGPS  Coordonnee GPS en y
      * @param rayon Rayon de recherche
      * @return Un objet JSON contenant le resultat de la requete
      */
@@ -144,17 +180,19 @@ public class Serveur implements InterfaceResto {
         try {
             PreparedStatement statement = DBConnection.getInstance().prepareStatement("""
                     SELECT * FROM RESTAURANT
-                    WHERE SQRT(POWER(xGPS - ?, 2) + POWER(yGPS - ?, 2)) < ?
+                        WHERE SQRT(POWER(xGPS - ?, 2) + POWER(yGPS - ?, 2)) < ?
                     """);
 
             statement.setDouble(1, xGPS);
             statement.setDouble(2, yGPS);
             statement.setInt(3, rayon);
+
             ResultSet resultSet = statement.executeQuery();
 
             JSONArray restaurants = new JSONArray();
             while (resultSet.next()) {
                 restaurants.put(new JSONObject()
+                        .put("numResto", resultSet.getInt("numResto"))
                         .put("nomResto", resultSet.getString("nomResto"))
                         .put("adresse", resultSet.getString("adresse"))
                         .put("xGPS", resultSet.getString("xgps"))

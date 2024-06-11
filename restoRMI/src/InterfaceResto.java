@@ -16,6 +16,13 @@ public interface InterfaceResto extends Remote {
     JSONObject createRestaurant(String nomResto, String adresse, int nbPlaces, double xGPS, double yGPS);
 
     /**
+     * Permet de supprimer un restaurant de la base de donnees
+     * @param numResto Numero du restaurant
+     *                 @return Un objet JSON contenant le resultat de la requete
+     */
+    JSONObject deleteRestaurant(int numResto);
+
+    /**
      * Permet de creer une reservation pour un restaurant
      *
      * @param nomClient     Nom du client

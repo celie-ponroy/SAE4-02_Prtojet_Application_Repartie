@@ -20,3 +20,6 @@ hello-view.fxml
 *.iml
 *.ipr
 
+
+### RestoRMI Credentials ###
+restoRMI/src/Crendentials.*
