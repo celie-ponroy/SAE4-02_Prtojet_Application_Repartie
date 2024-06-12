@@ -16,6 +16,7 @@
 <body>
 <div id="map"></div>
 <div id="stationInfo"></div>
+<div id="flex-items-center"><p>zefvsergdvqrgsdvs</p></div>
 
 <!-- Script Leaflet CSS -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
@@ -24,6 +25,27 @@
 <!-- Script Template -->
 <script id="stationTemplate" type="text/x-handlebars-template">
     <h2>Stations Vlib: </h2>
+    <div>
+        <h4>{{this.name}} :</h4>
+        <div>
+            <img src="img/bike.svg" alt="vélo" height="15" width="15"/>
+            {{this.nbVelo}}
+            <img src="img/parking.svg" alt="docks" height="15" width="15"/>
+            {{this.nbDock}}
+        </div>
+        <div><p>Address : {{this.address}}</p></div>
+    </div>
+</script>
+<script id="creationRestoTemplate" type="text/x-handlebars-template">
+    <h2>Création resto: </h2>
+    <form id="formResto">
+        <label>Nom du restorant :</label></br>
+        <input type="text">
+        <label>Adresse :</label></br>
+        <input type="text">
+        <label>Adresse :</label></br>
+        <input type="text">
+    </form>
     <div>
         <h4>{{this.name}} :</h4>
         <div>
