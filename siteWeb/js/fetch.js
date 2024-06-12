@@ -26,6 +26,36 @@ async function infoStations() {
     }
 }
 
+async function infoRestaurants() {
+    try {
+        let fetchBD = await fetch("ServiceWeb/restaurant.json");
+        let restaurantJSON = await fetchBD.json();
+
+        if (restaurantJSON === undefined || restaurantJSON.error !== "") {
+            alert("error : " + restaurantJSON.error);
+            return;
+        }
+
+        if (restaurantJSON.success == "false") {
+            alert("No restaurant found");
+        }
+
+        let restaurantList = [];
+        restaurantJSON.forEach(restaurant => {
+            let id = restaurant.numResto;
+            let name = restaurant.nomResto;
+            let address = restaurant.addresse;
+            let lat = restaurant.yGPS;
+            let lon = restaurant.xGPS;
+            restaurantList.push({ id, name, address, lat, lon })
+        })
+        return restaurantList;
+    } catch (error) {
+        alert('fetch error :' + error.message);
+    }
+}
+
 export default {
     infoStations: infoStations,
+    infoRestaurants: infoRestaurants,
 }

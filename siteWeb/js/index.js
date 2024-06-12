@@ -1,6 +1,6 @@
 import fetch from "./fetch.js";
 import ui from "./ui.js"
-
+import form from "./form.js"
 //icone a définir
 var myIcon = L.icon({
     iconUrl: './img/bike.svg',
@@ -34,6 +34,7 @@ let init = async function () {
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
 
+    map.on('contextmenu', function (event){form.formRestorant(event)});
     //récupération des infos des stations
     let infoStations = await fetch.infoStations();
     if (infoStations !== undefined) {

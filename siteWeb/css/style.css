@@ -2,3 +2,16 @@
     width: 700px;
     height: 700px;
 }
+
+#flex-items-center{
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    color: blue;
+    background: blueviolet;
+    border: 3px solid black;
+    border-radius: 7px;
+    padding: 10px;
+    z-index: 999;
+    min-width: 60px;
+}
