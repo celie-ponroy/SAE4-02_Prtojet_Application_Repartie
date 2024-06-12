@@ -17,7 +17,8 @@ import java.rmi.server.ServerNotActiveException;
  * ServiceHttp : classe permettant de gérer les requêtes HTTP
  */
 public class ServiceHttp {
-    InterfaceServiceRMI service;
+    InterfaceServiceRMI serviceTrafic;
+    InterfaceResto serviceResto;
     HttpServer httpServer;
 
     static int compteurTrafic = 0;
@@ -25,7 +26,7 @@ public class ServiceHttp {
     static int compteurResto = 0;
 
     ServiceHttp(InterfaceServiceRMI serv) throws IOException, InterruptedException{
-        this.service=serv;
+        this.serviceTrafic = serv;
         httpServer = HttpServer.create(new InetSocketAddress("localhost", 8001), 0);
         httpServer.createContext("/trafic",
                 new HttpHandler() {
@@ -49,6 +50,7 @@ public class ServiceHttp {
                         }
                     }
                 });
+        
         httpServer.start();
     }
 
@@ -73,7 +75,7 @@ public class ServiceHttp {
      * @throws InterruptedException
      */
     void demanderServiceTrafic(HttpExchange exchange) throws IOException, InterruptedException {
-        String response = this.service.lancerRequete();
+        String response = this.serviceTrafic.lancerRequete();
         JSONObject obj = new JSONObject(response);
         sendJsonResponse(exchange, obj.toString());
         compteurTrafic++;
@@ -87,7 +89,9 @@ public class ServiceHttp {
      * @throws InterruptedException
      */
     void demanderServiceResto(HttpExchange exchange) throws IOException, InterruptedException {
-        /*TODO */
+        String response = serviceResto.getRestaurants();
+        JSONObject obj = new JSONObject(response);
+        sendJsonResponse(exchange, obj.toString());
         compteurResto++;
         System.out.println("Nombre de demandes de resto : "+compteurResto);
     }
