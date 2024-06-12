@@ -10,10 +10,16 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.rmi.server.RemoteServer;
+import java.rmi.server.ServerNotActiveException;
 
+/**
+ * ServiceHttp : classe permettant de gérer les requêtes HTTP
+ */
 public class ServiceHttp {
     InterfaceServiceRMI service;
     HttpServer httpServer;
+
     ServiceHttp(InterfaceServiceRMI serv) throws IOException, InterruptedException{
         this.service=serv;
         httpServer = HttpServer.create(new InetSocketAddress("localhost", 8001), 0);
@@ -39,8 +45,15 @@ public class ServiceHttp {
                         }
                     }
                 });
+        httpServer.start();
     }
 
+    /**
+     * sendJsonResponse : envoi d'une réponse JSON à un client HTTP
+     * @param exchange
+     * @param jsonResponse
+     * @throws IOException
+     */
     private void sendJsonResponse(HttpExchange exchange, String jsonResponse) throws IOException {
         exchange.getResponseHeaders().set("Content-Type", "application/json; charset=UTF-8");
         exchange.sendResponseHeaders(200, jsonResponse.getBytes().length);
@@ -49,33 +62,32 @@ public class ServiceHttp {
         os.close();
     }
 
-
-
-    //service resto(/resto) + service trafic (/trafic)
+    /**
+     * demanderServiceTrafic : récuperre les données du trafic et les envoi
+     * @param exchange
+     * @throws IOException
+     * @throws InterruptedException
+     */
     void demanderServiceTrafic(HttpExchange exchange) throws IOException, InterruptedException {
         String response = this.service.lancerRequete();
         JSONObject obj = new JSONObject(response);
         sendJsonResponse(exchange, obj.toString());
-        System.out.println(obj);
-
-        //httpServeur qui utilise ^
-        /*
-        System.out.println(resp.body());
-        System.out.println(resp.headers());
-        System.out.println("b::::"+b);
-         */
+        String host = "";
+        try{
+            host = RemoteServer.getClientHost();
+            System.out.println("Demande trafic de "+host);
+        }catch(ServerNotActiveException e) { 
+            System.out.println("Erreur lors de la récupération de l'adresse IP du client");
+        }
     }
-    void demanderServiceResto(HttpExchange exchange) throws IOException, InterruptedException {
-        //changer apres merge
-        //String response = this.service.lancerRequete();
-        //JSONObject obj = new JSONObject(response);
-        //System.out.println(obj);
 
-        //httpServeur qui utilise ^
-        /*
-        System.out.println(resp.body());
-        System.out.println(resp.headers());
-        System.out.println("b::::"+b);
-         */
+    /**
+     * demanderServiceResto : récuperre les données du restaurant et les envoi
+     * @param exchange
+     * @throws IOException
+     * @throws InterruptedException
+     */
+    void demanderServiceResto(HttpExchange exchange) throws IOException, InterruptedException {
+        /*TODO */
     }
 }

@@ -6,11 +6,13 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
-import java.rmi.Remote;
-import java.rmi.RemoteException;
+
 
 
 public class ServiceRMI implements InterfaceServiceRMI {
+    /**
+     * Methode qui permet de lancer une requete pour acceder a Info Trafic et la reourne
+     */
     public String lancerRequete() throws IOException, InterruptedException {
         System.out.println("debut");
         
@@ -23,6 +25,7 @@ public class ServiceRMI implements InterfaceServiceRMI {
         //lancer la requete et recuperer la reponse
         HttpResponse<String> resp = client.send(request, BodyHandlers.ofString());
 
+        System.out.println("envoi du json:");
         System.out.println(resp.body());
 
         return resp.body();

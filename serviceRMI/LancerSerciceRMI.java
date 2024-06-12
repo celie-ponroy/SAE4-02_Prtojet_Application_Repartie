@@ -15,7 +15,5 @@ public class LancerSerciceRMI {
         Registry reg = LocateRegistry.getRegistry(1099); //Récupération/Création de l'annuaire
         reg.rebind("ServiceTrafic", rd);//Enregistrement de la référence sous le nom "CompteurDistant"
 
-        //new ServiceRMI().lancerRequete();
-
     }
 }
