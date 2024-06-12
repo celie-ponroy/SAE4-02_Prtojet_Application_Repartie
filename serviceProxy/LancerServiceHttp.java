@@ -6,13 +6,22 @@ import java.rmi.registry.Registry;
 public class LancerServiceHttp {
 
     public static void main(String[] args) throws IOException, NotBoundException, InterruptedException {
-        //chercher le proxy
-        /* se connecter à l'annuaire de la machine */
-        Registry reg = LocateRegistry.getRegistry("localhost",1099);
+        
+        String serveur="localhost";    // par défaut le serveur est sur la même machine
+        int port = 1099;                      // le port de la rmiregistry par défaut 
+        if(args.length > 0)
+            serveur = args[0];
+        if(args.length > 1)
+            port = Integer.parseInt(args[1]);
 
-        /* Récupération de la référence distante */
+        //chercher le proxy Trafic
+        Registry reg = LocateRegistry.getRegistry(serveur,port);
         InterfaceServiceRMI objService = (InterfaceServiceRMI) reg.lookup("ServiceTrafic");
+
+        //rechercher le proxy Resto
+        Registry reg2 = LocateRegistry.getRegistry(serveur,serveur);
+        InterfaceResto objService2 = (InterfaceResto) reg2.lookup("ServiceTrafic");
         //Lancement du service HTTP
-        ServiceHttp s = new ServiceHttp(objService);
+        ServiceHttp s = new ServiceHttp(objService, objService2);
     }
 }

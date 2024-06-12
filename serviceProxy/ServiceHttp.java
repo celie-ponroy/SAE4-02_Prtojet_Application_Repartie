@@ -25,8 +25,9 @@ public class ServiceHttp {
 
     static int compteurResto = 0;
 
-    ServiceHttp(InterfaceServiceRMI serv) throws IOException, InterruptedException{
-        this.serviceTrafic = serv;
+    ServiceHttp(InterfaceServiceRMI servT,InterfaceResto serviceR) throws IOException, InterruptedException{
+        this.serviceResto = serviceR;
+        this.serviceTrafic = servT;
         httpServer = HttpServer.create(new InetSocketAddress("localhost", 8001), 0);
         httpServer.createContext("/trafic",
                 new HttpHandler() {
