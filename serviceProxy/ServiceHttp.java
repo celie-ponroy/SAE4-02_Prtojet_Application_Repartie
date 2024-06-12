@@ -20,6 +20,10 @@ public class ServiceHttp {
     InterfaceServiceRMI service;
     HttpServer httpServer;
 
+    static int compteurTrafic = 0;
+
+    static int compteurResto = 0;
+
     ServiceHttp(InterfaceServiceRMI serv) throws IOException, InterruptedException{
         this.service=serv;
         httpServer = HttpServer.create(new InetSocketAddress("localhost", 8001), 0);
@@ -72,13 +76,8 @@ public class ServiceHttp {
         String response = this.service.lancerRequete();
         JSONObject obj = new JSONObject(response);
         sendJsonResponse(exchange, obj.toString());
-        String host = "";
-        try{
-            host = RemoteServer.getClientHost();
-            System.out.println("Demande trafic de "+host);
-        }catch(ServerNotActiveException e) { 
-            System.out.println("Erreur lors de la récupération de l'adresse IP du client");
-        }
+        compteurTrafic++;
+        System.out.println("Nombre de demandes de trafic : "+compteurTrafic);
     }
 
     /**
@@ -89,5 +88,7 @@ public class ServiceHttp {
      */
     void demanderServiceResto(HttpExchange exchange) throws IOException, InterruptedException {
         /*TODO */
+        compteurResto++;
+        System.out.println("Nombre de demandes de resto : "+compteurResto);
     }
 }
