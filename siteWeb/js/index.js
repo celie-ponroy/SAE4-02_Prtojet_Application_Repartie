@@ -29,20 +29,37 @@ let init = async function () {
     // setView([latitude,longitude], zoom)
     let map = L.map('map').setView([48.688135, 6.171586], 13);
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 18,
-        minZoom: 12,
+        // maxZoom: 18,
+        // minZoom: 12,
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
 
     //récupération des infos des stations
-    let infoStations = await fetch.infoStations();
-    if (infoStations !== undefined) {
-        infoStations.forEach(station => {
-            //ajout des markers
-            let marker = L.marker([station.lat, station.lon]);
+    // let infoStations = await fetch.infoStations();
+    // if (infoStations !== undefined) {
+    //     infoStations.forEach(station => {
+    //         //ajout des markers
+    //         let marker = L.marker([station.lat, station.lon]);
+    //         marker.on('click', function () {
+    //             //affichage des infos de la station apres un click
+    //             ui.displayInfoStation(station)
+    //             //changement des icones du dernier et du nouveau marker clické
+    //             if (lastClicked !== undefined) {
+    //                 lastClicked.setIcon(myIcon2)
+    //             }
+    //             this.setIcon(myIcon)
+    //             lastClicked = this;
+    //         }).addTo(map)
+    //     });
+    // }
+
+    let infoRestaurants = await fetch.infoRestaurants();
+    if (infoRestaurants !== undefined) {
+        infoRestaurants.forEach(restaurant => {
+            let marker = L.marker([restaurant.lat, restaurant.lon]);
             marker.on('click', function () {
-                //affichage des infos de la station apres un click
-                ui.displayInfoStation(station)
+                //affichage des infos du restaurant apres un click
+                ui.displayInfoRestaurant(restaurant)
                 //changement des icones du dernier et du nouveau marker clické
                 if (lastClicked !== undefined) {
                     lastClicked.setIcon(myIcon2)

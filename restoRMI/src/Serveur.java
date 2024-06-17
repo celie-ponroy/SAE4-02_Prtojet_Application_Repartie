@@ -28,7 +28,7 @@ public class Serveur implements InterfaceResto {
             statement.setDouble(4, xGPS);
             statement.setDouble(5, yGPS);
 
-            if (!(6.100 < xGPS && xGPS < 6.300 && 49.100 < yGPS && yGPS < 49.300)) {
+            if (!(49.100 < xGPS && xGPS < 49.300 && 6.100 < yGPS && yGPS < 6.300)) {
                 res.put("error", "Coordinates are not in the allowed range");
             }
 
