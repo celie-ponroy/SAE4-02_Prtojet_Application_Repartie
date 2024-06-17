@@ -18,9 +18,7 @@ public class LancerServiceHttp {
         Registry reg = LocateRegistry.getRegistry(serveur,port);
         InterfaceServiceRMI objService = (InterfaceServiceRMI) reg.lookup("ServiceTrafic");
 
-        //rechercher le proxy Resto
-        Registry reg2 = LocateRegistry.getRegistry(serveur,serveur);
-        InterfaceResto objService2 = (InterfaceResto) reg2.lookup("ServiceTrafic");
+        InterfaceResto objService2 = (InterfaceResto) reg.lookup("DistributeurResto");
         //Lancement du service HTTP
         ServiceHttp s = new ServiceHttp(objService, objService2);
     }

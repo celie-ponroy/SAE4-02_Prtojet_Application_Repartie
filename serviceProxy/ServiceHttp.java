@@ -25,34 +25,48 @@ public class ServiceHttp {
 
     static int compteurResto = 0;
 
-    ServiceHttp(InterfaceServiceRMI servT,InterfaceResto serviceR) throws IOException, InterruptedException{
+    ServiceHttp(InterfaceServiceRMI servT, InterfaceResto serviceR) throws IOException, InterruptedException {
         this.serviceResto = serviceR;
         this.serviceTrafic = servT;
         httpServer = HttpServer.create(new InetSocketAddress("localhost", 8001), 0);
         httpServer.createContext("/trafic",
                 new HttpHandler() {
-                @Override
-                public void handle(HttpExchange exchange) throws IOException {
-                    try {
-                        demanderServiceTrafic(exchange);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+                    @Override
+                    public void handle(HttpExchange exchange) throws IOException {
+                        handleRequest(exchange, (e) -> demanderServiceTrafic(e));
                     }
-                }
                 });
         httpServer.createContext("/resto",
                 new HttpHandler() {
                     @Override
                     public void handle(HttpExchange exchange) throws IOException {
-                        try {
-                            demanderServiceResto(exchange);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+                        handleRequest(exchange, (e) -> demanderServiceResto(e));
                     }
                 });
-        
+
         httpServer.start();
+    }
+
+    private interface RequestHandler {
+        void handle(HttpExchange exchange) throws IOException, InterruptedException;
+    }
+
+    private void handleRequest(HttpExchange exchange, RequestHandler handler) throws IOException {
+        // Add CORS headers to the response
+        exchange.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
+        exchange.getResponseHeaders().add("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+        exchange.getResponseHeaders().add("Access-Control-Allow-Headers", "Content-Type, Authorization");
+
+        if ("OPTIONS".equals(exchange.getRequestMethod())) {
+            exchange.sendResponseHeaders(204, -1); // No content for OPTIONS request
+            return;
+        }
+
+        try {
+            handler.handle(exchange);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -68,6 +82,7 @@ public class ServiceHttp {
         os.write(jsonResponse.getBytes());
         os.close();
     }
+
 
     /**
      * demanderServiceTrafic : récuperre les données du trafic et les envoi
