@@ -55,7 +55,37 @@ async function infoRestaurants() {
     }
 }
 
+async function infosTrafic(){
+    try {
+        let fetchTrafic = await fetch("http://localhost:8001/trafic");
+        let traficJSON = await fetchTrafic.json();
+        if (traficJSON === undefined || traficJSON.error !== "") {
+            alert("error : " + traficJSON.error);
+            return;
+        }
+        let traficList = [];
+        traficJSON.incidents.forEach(incident => {
+            let id = incident.id;
+            let shortDescription = incident.short_description;
+            let description = incident.description;
+            let dateDebut = incident.starttime;
+            let dateFin = incident.endtime;
+            let adresse = incident.location.location_description;
+            let polyline = incident.location.polyline;
+            let type = incident.type;
+            let lat = split(polyline, " ")[0];
+            let long = split(polyline, " ")[1];
+            traficList.push({id, shortDescription, description, dateDebut, dateFin, adresse, lat, long, type})
+        })
+        return traficList;
+    } catch (error) {
+        alert('fetch error :' + error.message);
+    }
+
+}
+
 export default {
     infoStations,
-    infoRestaurants
+    infoRestaurants,
+    infosTrafic
 }

@@ -69,6 +69,24 @@ let init = async function () {
             }).addTo(map)
         });
     }
+
+    let infosTrafic = await fetch.infosTrafic();
+    if (infosTrafic !== undefined) {
+        infosTrafic.forEach(trafic => {
+            let marker = L.marker([trafic.lat, trafic.lon]);
+            marker.on('click', function () {
+                //affichage des infos du trafic apres un click
+                ui.displayInfosTrafic(trafic)
+                //changement des icones du dernier et du nouveau marker clické
+                if (lastClicked !== undefined) {
+                    lastClicked.setIcon(myIcon2)
+                }
+                this.setIcon(myIcon)
+                lastClicked = this;
+            }).addTo(map)
+        });
+    }
+
 };
 
 init();
