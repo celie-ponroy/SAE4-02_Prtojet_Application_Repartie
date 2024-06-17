@@ -18,8 +18,9 @@ public interface InterfaceResto extends Remote {
 
     /**
      * Permet de supprimer un restaurant de la base de donnees
+     *
      * @param numResto Numero du restaurant
-     *                 @return Un objet JSON contenant le resultat de la requete
+     * @return Un objet JSON contenant le resultat de la requete
      */
     String deleteRestaurant(int numResto) throws RemoteException;
 
@@ -46,12 +47,19 @@ public interface InterfaceResto extends Remote {
     /**
      * Permet de recuperer les restaurants proches d'une position GPS
      *
-     * @param xGPS Coordonnee GPS en x
-     * @param yGPS Coordonnee GPS en y
+     * @param xGPS  Coordonnee GPS en x
+     * @param yGPS  Coordonnee GPS en y
      * @param rayon Rayon de recherche
      * @return Un objet JSON contenant le resultat de la requete
      */
     String getRestaurantsByPos(double xGPS, double yGPS, int rayon) throws RemoteException;
+
+    /**
+     * Permet de recuperer les informations d'un restaurant
+     *
+     * @param numRestaurant Numero du restaurant
+     */
+    public String getRestaurant(int numRestaurant) throws RemoteException;
 
     /**
      * Permet de recuperer les reservations d'un restaurant

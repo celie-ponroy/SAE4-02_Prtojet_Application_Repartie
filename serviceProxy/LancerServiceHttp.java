@@ -17,10 +17,12 @@ public class LancerServiceHttp {
         //chercher le proxy Trafic
         Registry reg = LocateRegistry.getRegistry(serveur, port);
         InterfaceServiceRMI objService = (InterfaceServiceRMI) reg.lookup("ServiceTrafic");
-        
+
         //rechercher le proxy Resto
         InterfaceResto objService2 = (InterfaceResto) reg.lookup("DistributeurResto");
         //Lancement du service HTTP
         ServiceHttp s = new ServiceHttp(objService, objService2);
+
+        System.out.println("Service HTTP lance sur le port " + s.port + " (connecte a : " + serveur + " sur le port " + port + ")");
     }
 }

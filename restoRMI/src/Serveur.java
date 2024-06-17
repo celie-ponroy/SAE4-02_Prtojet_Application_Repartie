@@ -215,6 +215,41 @@ public class Serveur implements InterfaceResto {
     }
 
     /**
+     * Permet de recuperer les informations d'un restaurant
+     *
+     * @param numRestaurant Numero du restaurant
+     */
+    public String getRestaurant(int numRestaurant) {
+        JSONObject res = new JSONObject();
+        try {
+            PreparedStatement statement = DBConnection.getInstance().prepareStatement("""
+                    SELECT * FROM RESTAURANT WHERE NUMRESTO = ?
+                    """);
+
+            statement.setInt(1, numRestaurant);
+
+            ResultSet resultSet = statement.executeQuery();
+
+            if (!resultSet.next()) {
+                return res.put("success", "false").put("error", "Restaurant does not exist").toString();
+            }
+
+            res.put("numResto", resultSet.getInt("numResto"));
+            res.put("nomResto", resultSet.getString("nomResto"));
+            res.put("adresse", resultSet.getString("adresse"));
+            res.put("xGPS", resultSet.getString("xGPS"));
+            res.put("yGPS", resultSet.getString("yGPS"));
+            res.put("nbPlaces", resultSet.getInt("nbPlaces"));
+            res.put("success", "true");
+
+            return res.toString();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return res.put("success", "false").put("error", e.getMessage()).toString();
+        }
+    }
+
+    /**
      * Permet de recuperer les reservations d'un restaurant
      *
      * @param numRestaurant Numero du restaurant

@@ -20,15 +20,15 @@ public class ServiceHttp {
     InterfaceServiceRMI serviceTrafic;
     InterfaceResto serviceResto;
     HttpServer httpServer;
+    int port = 8001;
 
     static int compteurTrafic = 0;
-
     static int compteurResto = 0;
 
     ServiceHttp(InterfaceServiceRMI servT, InterfaceResto serviceR) throws IOException, InterruptedException {
         this.serviceResto = serviceR;
         this.serviceTrafic = servT;
-        httpServer = HttpServer.create(new InetSocketAddress("localhost", 8001), 0);
+        httpServer = HttpServer.create(new InetSocketAddress("localhost", port), 0);
         httpServer.createContext("/trafic",
                 new HttpHandler() {
                     @Override
