@@ -45,8 +45,8 @@ async function infoRestaurants() {
             let id = restaurant.numResto;
             let name = restaurant.nomResto;
             let address = restaurant.addresse;
-            let lat = restaurant.yGPS;
-            let lon = restaurant.xGPS;
+            let lat = restaurant.xGPS;
+            let lon = restaurant.yGPS;
             restaurantList.push({ id, name, address, lat, lon })
         })
         return restaurantList;

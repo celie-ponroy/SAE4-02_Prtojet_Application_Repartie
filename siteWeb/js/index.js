@@ -34,7 +34,10 @@ let init = async function () {
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
 
-    map.on('contextmenu', function (event){form.formRestorant(event)});
+    //addEventListeneur pour contextMenu
+    map.on('contextmenu', function (){form.formRestorant();console.log("click")});
+    document.getElementById("formResto").addEventListener("submit", (event) => {form.callbackFormResto(event)});
+
     //récupération des infos des stations
     let infoStations = await fetch.infoStations();
     if (infoStations !== undefined) {
