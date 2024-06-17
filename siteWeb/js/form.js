@@ -33,14 +33,15 @@ let callbackFormResto = async function (e) {
     }
 
 
-    let fetchAddresse = await fetch(`https://api-adresse.data.gouv.fr/search/?q=${adresse}`);
+    /*let fetchAddresse = await fetch(`http://localhost:8001/adress/${adresse}`);
     let response = await fetchAddresse.json();
-    if(response.code !== undefined && response.code == 400){
+    console.log(response);
+    /**if(response.code !== undefined && response.code == 400){
         errorAdresse.textContent = "Aucunne adresse corespondante n'as été trouvé";
         isValid = false;
     }else{
         console.log(response.features[0].properties.label);
-    }
+    }*/
 
     if (adresse.value.trim() === '') {
         errorAdresse.textContent = 'Le champ "Adresse" doit être rempli';

@@ -24,7 +24,7 @@ public class ServiceHttp {
 
     static int compteurTrafic = 0;
     static int compteurResto = 0;
-
+    static int compteurAdresse = 0;
     ServiceHttp(InterfaceServiceRMI servT, InterfaceResto serviceR) throws IOException, InterruptedException {
         this.serviceResto = serviceR;
         this.serviceTrafic = servT;
@@ -91,7 +91,7 @@ public class ServiceHttp {
      * @throws InterruptedException
      */
     void demanderServiceTrafic(HttpExchange exchange) throws IOException, InterruptedException {
-        String response = this.serviceTrafic.lancerRequete();
+        String response = this.serviceTrafic.lancerRequete("https://carto.g-ny.org/data/cifs/cifs_waze_v2.json");
         JSONObject obj = new JSONObject(response);
         sendJsonResponse(exchange, obj.toString());
         compteurTrafic++;

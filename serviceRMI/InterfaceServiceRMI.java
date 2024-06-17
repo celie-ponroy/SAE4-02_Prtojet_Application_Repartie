@@ -3,5 +3,5 @@ import java.rmi.Remote;
 
 
 public interface InterfaceServiceRMI extends Remote {
-    public String lancerRequete() throws IOException, InterruptedException ;
+    public String lancerRequete(String url) throws IOException, InterruptedException ;
 }

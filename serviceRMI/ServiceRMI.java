@@ -13,14 +13,13 @@ public class ServiceRMI implements InterfaceServiceRMI {
     /**
      * Methode qui permet de lancer une requete pour acceder a Info Trafic et la reourne
      */
-    public String lancerRequete() throws IOException, InterruptedException {
-        System.out.println("debut");
-        
+    public String lancerRequete(String url) throws IOException, InterruptedException {//https://carto.g-ny.org/data/cifs/cifs_waze_v2.json
+
         //creer un http client
         HttpClient client = HttpClient.newHttpClient();
         //faire une requete sur l'api
         HttpRequest request = HttpRequest.newBuilder()
-            .uri(URI.create("https://carto.g-ny.org/data/cifs/cifs_waze_v2.json"))
+            .uri(URI.create(url))
             .build();
         //lancer la requete et recuperer la reponse
         HttpResponse<String> resp = client.send(request, BodyHandlers.ofString());
