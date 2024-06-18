@@ -110,8 +110,9 @@ async function init() {
 
     //addEventListeneur pour reservation de réstaurant
     document.getElementById("stationInfo").addEventListener('click', function (event) {
-        console.log(event.target);
-        form.formReserver();
+        if(event.target.id == "reservation"){
+            form.formReserver();
+        }
     });
 
     document.getElementById("stationInfo").addEventListener("submit", (event) => {
