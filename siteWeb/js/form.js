@@ -1,4 +1,4 @@
-import {iconRestos, lastClickedRestaurant} from "./index.js";
+import {iconRestos, lastRestaurant} from "./index.js";
 
 let formRestorant = function (event) {
     //récupération et affichage du template stationInfo
@@ -12,15 +12,15 @@ let formRestorant = function (event) {
 }
 
 let formReserver = function () {
-    console.log(lastClickedRestaurant);
+    console.log(lastRestaurant);
     //récupération et affichage du template stationInfo
     let htmlStationInfo = document.getElementById("stationInfo");
     let formReservationRestoTemplate = document.getElementById("reservationRestoTemplate");
     let template = Handlebars.compile(formReservationRestoTemplate.innerHTML);
     htmlStationInfo.innerHTML = template({
-        nomResto: lastClickedRestaurant.name,
-        address: lastClickedRestaurant.address,
-        nbPlaces: lastClickedRestaurant.nbPlaces,
+        nomResto: lastRestaurant.name,
+        address: lastRestaurant.address,
+        nbPlaces: lastRestaurant.nbPlaces,
     });
 }
 
@@ -124,7 +124,7 @@ let callbackFormReservationResto = async function (e) {
     let prenomClient = document.getElementById('prenomClient');
     let nbConvives = document.getElementById('nbConvives');
     let numTel = document.getElementById('numTel');
-    let numRestaurant = lastClickedRestaurant.id;
+    let numRestaurant = lastRestaurant.id;
     let date = document.getElementById('date');
 
     // Récupèration des éléments permétant d'afficher les erreurs

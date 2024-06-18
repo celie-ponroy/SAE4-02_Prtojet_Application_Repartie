@@ -52,7 +52,7 @@ var iconTrafic = L.icon({
     shadowAnchor: [22, 84]
 });
 
-export let lastClickedRestaurant;
+export let lastRestaurant;
 
 
 // Fonction d'initialisation
@@ -72,7 +72,7 @@ async function init() {
 // Variables pour stocker les derniers marqueurs cliqués
 
     let lastClickedStation;
-
+    let lastClickedRestaurant;
     let lastClikedTrafic;
 
 
@@ -133,6 +133,8 @@ async function init() {
                 if (lastClickedRestaurant !== undefined) {
                     lastClickedRestaurant.setIcon(iconRestos);
                 }
+
+                lastRestaurant = restaurant;
 
                 // Définition de l'icône pour le marqueur actuellement cliqué
                 this.setIcon(iconRestoCourant);
