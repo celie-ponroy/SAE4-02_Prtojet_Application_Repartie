@@ -1,7 +1,6 @@
 import {iconRestos} from "./index.js";
 let formRestorant = function (event) {
     //récupération et affichage du template stationInfo
-    console.log(event);
     let htmlFormResto = document.getElementById("formResto");
     let formRestoTemplate = document.getElementById("creationRestoTemplate");
     let template = Handlebars.compile(formRestoTemplate.innerHTML);
@@ -67,22 +66,27 @@ let callbackFormResto = async function (e) {
     if (isValid) {
         try {
             // Resto avec données du formulaire
+
             let resto = {
-                nom: nomResto,
-                adresse: adresse,
+                nom: nomResto.value,
+                adresse: adresse.value,
                 nbPlaces: nombrePlaces.value,
                 xGPS: lng.value,
                 yGPS: lng.value
             };
 
+            console.log(resto);
+
             // Envoye requête POST au serveur
             let response = await fetch('http://localhost:8001/createRestaurant', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json; charset=UTF-8',
                 },
                 body: JSON.stringify(resto)
             });
+
+            console.log(response);
 
             if (response.ok) {
                 let jsonResponse = await response.json();
