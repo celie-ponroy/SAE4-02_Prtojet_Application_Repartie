@@ -44,10 +44,11 @@ async function infoRestaurants() {
         restaurantJSON.restaurants.forEach(restaurant => {
             let id = restaurant.numResto;
             let name = restaurant.nomResto;
-            let address = restaurant.addresse;
+            let address = restaurant.adresse;
+            let nbPlaces = restaurant.nbPlaces;
             let lat = restaurant.xGPS;
             let lon = restaurant.yGPS;
-            restaurantList.push({ id, name, address, lat, lon })
+            restaurantList.push({ id, name, address, nbPlaces, lat, lon })
         })
         return restaurantList;
     } catch (error) {
@@ -59,8 +60,8 @@ async function infosTrafic(){
     try {
         let fetchTrafic = await fetch("http://localhost:8001/trafic");
         let traficJSON = await fetchTrafic.json();
-        if (traficJSON === undefined || traficJSON.error !== "") {
-            alert("error : " + traficJSON.error);
+        if (traficJSON === undefined) {
+            alert("error : info trafic not found");
             return;
         }
         let traficList = [];
@@ -68,18 +69,22 @@ async function infosTrafic(){
             let id = incident.id;
             let shortDescription = incident.short_description;
             let description = incident.description;
-            let dateDebut = incident.starttime;
-            let dateFin = incident.endtime;
+            let dateDebutFormat = incident.starttime;
+            //changer le format de la date de début
+            let dateDebut = dateDebutFormat.split("T")[0].split("-").reverse().join("/");
+            //changer le format de la date de fin
+            let dateFinFormat = incident.endtime;
+            let dateFin = dateFinFormat.split("T")[0].split("-").reverse().join("/");
             let adresse = incident.location.location_description;
             let polyline = incident.location.polyline;
             let type = incident.type;
-            let lat = split(polyline, " ")[0];
-            let long = split(polyline, " ")[1];
+            let lat = polyline.split(" ")[0];
+            let long = polyline.split(" ")[1];
             traficList.push({id, shortDescription, description, dateDebut, dateFin, adresse, lat, long, type})
         })
         return traficList;
     } catch (error) {
-        alert('fetch error :' + error.message);
+        alert('fetch error : info trafic');
     }
 
 }

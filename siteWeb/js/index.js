@@ -59,7 +59,7 @@ let init = async function () {
             let marker = L.marker([restaurant.lat, restaurant.lon]);
             marker.on('click', function () {
                 //affichage des infos du restaurant apres un click
-                ui.displayInfoRestaurant(restaurant)
+                ui.displayInfosResto(restaurant)
                 //changement des icones du dernier et du nouveau marker clické
                 if (lastClicked !== undefined) {
                     lastClicked.setIcon(myIcon2)
@@ -73,7 +73,7 @@ let init = async function () {
     let infosTrafic = await fetch.infosTrafic();
     if (infosTrafic !== undefined) {
         infosTrafic.forEach(trafic => {
-            let marker = L.marker([trafic.lat, trafic.lon]);
+            let marker = L.marker([trafic.lat, trafic.long]);
             marker.on('click', function () {
                 //affichage des infos du trafic apres un click
                 ui.displayInfosTrafic(trafic)
@@ -86,7 +86,6 @@ let init = async function () {
             }).addTo(map)
         });
     }
-
 };
 
 init();

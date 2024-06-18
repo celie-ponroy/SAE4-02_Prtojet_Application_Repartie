@@ -12,6 +12,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.RemoteServer;
 import java.rmi.server.ServerNotActiveException;
+import java.nio.charset.StandardCharsets;
 
 /**
  * ServiceHttp : classe permettant de gérer les requêtes HTTP
@@ -77,9 +78,15 @@ public class ServiceHttp {
      */
     private void sendJsonResponse(HttpExchange exchange, String jsonResponse) throws IOException {
         exchange.getResponseHeaders().set("Content-Type", "application/json; charset=UTF-8");
-        exchange.sendResponseHeaders(200, jsonResponse.getBytes().length);
+        // Convert jsonResponse to bytes using UTF-8 encoding
+        byte[] responseBytes = jsonResponse.getBytes(StandardCharsets.UTF_8);
+
+        // Set response status and headers
+        exchange.sendResponseHeaders(200, responseBytes.length);
+
+        // Write the response bytes to the output stream
         OutputStream os = exchange.getResponseBody();
-        os.write(jsonResponse.getBytes());
+        os.write(responseBytes);
         os.close();
     }
 

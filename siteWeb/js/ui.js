@@ -12,8 +12,21 @@ function displayInfoStations(station) {
     });
 }
 
+function displayInfosResto(resto) {
+    let htmlResto = document.getElementById("stationInfo");
+    let restoTemplate = document.getElementById("restoTemplate");
+    let template = Handlebars.compile(restoTemplate.innerHTML);
+    htmlResto.innerHTML = template({
+        nomResto : resto.name,
+        address : resto.address,
+        xGPS : resto.lat,
+        yGPS : resto.lon,
+        nbPlaces : resto.nbPlaces,
+    });
+}
+
 function displayInfosTrafic(trafic) {
-    let htmlTrafic = document.getElementById("traficInfo");
+    let htmlTrafic = document.getElementById("stationInfo");
     let traficTemplate = document.getElementById("traficTemplate");
     let template = Handlebars.compile(traficTemplate.innerHTML);
 htmlTrafic.innerHTML = template({
@@ -27,5 +40,5 @@ htmlTrafic.innerHTML = template({
 }
 
 export default {
-    displayInfoStation: displayInfoStations,
+    displayInfoStation: displayInfoStations, displayInfosTrafic : displayInfosTrafic, displayInfosResto : displayInfosResto
 }

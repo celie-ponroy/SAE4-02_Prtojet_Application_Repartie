@@ -16,7 +16,7 @@
 <body>
 <div id="map"></div>
 <div id="stationInfo"></div>
-<div id="traficInfo"></div>
+
 
 <!-- Script Leaflet CSS -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
@@ -40,12 +40,22 @@
 <script id="traficTemplate" type="text/x-handlebars-template">
     <h2>Info Trafic: </h2>
     <div>
-        <div id="titreTrafic"><img src="img/attention_panneau.png" alt="attention" height="15" width="15"><h4>{{this.shortDescription}} :</h4></div>
+        <h4><img src="img/attention_panneau.png" alt="attention" height="35" width="35"> {{this.shortDescription}} :</h4>
         <p>{{this.description}}</p>
-        <p>{{this.adresse}}</p>
-        <div id="adresseTrafic"><img src="img/gps.svg" alt="gps" height="15" width="15"><p>Date de début : {{this.dateDebut}}</p></div>
-        <p>Date de fin : {{this.dateFin}}</p>
-        <p>Type : {{this.type}}</p>
+        <p><img src="img/gps.svg" alt="gps" height="30" width="30">{{this.adresse}}</p>
+        <p><b>Date de début : </b>{{this.dateDebut}}</p>
+        <p><b>Date de fin : </b> {{this.dateFin}}</p>
+        <p><b>Type : </b>{{this.type}}</p>
+    </div>
+</script>
+
+<script id="restoTemplate" type="text/x-handlebars-template">
+    <h2>Restaurant: </h2>
+    <div>
+        <h4><img src="img/restaurant.png" alt="restaurant" height="35" width="35"/>{{this.nomResto}}</h4>
+        <p><img src="img/gps.svg" alt="gps" height="30" width="30">{{this.address}}</p>
+        <p><b>lat : </b>{{this.xGPS}} , <b>long : </b>{{this.yGPS}}</p>
+        <p><b>Nombre de places : </b>{{this.nbPlaces}}</p>
     </div>
 </script>
 
