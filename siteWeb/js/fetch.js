@@ -53,6 +53,7 @@ async function infoRestaurants() {
             let lon = restaurant.yGPS;
             restaurantList.push({ id, name, address, nbPlaces, lat, lon })
         })
+        console.log(restaurantList);
         return restaurantList;
     } catch (error) {
         alert('fetch error :' + error.message);
