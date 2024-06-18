@@ -7,7 +7,6 @@ let formRestorant = function (event) {
     let formRestoTemplate = document.getElementById("creationRestoTemplate");
     let template = Handlebars.compile(formRestoTemplate.innerHTML);
     htmlFormResto.innerHTML = template({});
-
     document.getElementById("lat").value = event.latlng.lat;
     document.getElementById("lng").value = event.latlng.lng;
 }
@@ -75,7 +74,6 @@ let callbackFormResto = async function (e) {
         this.setIcon(myIcon)
     }).addTo(map)
 
-
     // Submit formulaire
     if (isValid) {
         e.target.submit();
@@ -83,8 +81,6 @@ let callbackFormResto = async function (e) {
 }
 
 export default {
-    formRestorant: formRestorant,
-    callbackFormResto: callbackFormResto,
+    formRestorant,
+    callbackFormResto,
 }
-
-/**/
