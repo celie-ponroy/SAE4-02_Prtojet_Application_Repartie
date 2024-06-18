@@ -71,7 +71,7 @@ let callbackFormResto = async function (e) {
                 nom: nomResto,
                 adresse: adresse,
                 nbPlaces: nombrePlaces.value,
-                xGPS: lng.value,
+                xGPS: lat.value,
                 yGPS: lng.value
             };
 
