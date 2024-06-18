@@ -295,4 +295,18 @@ public class ServiceHttp {
         compteurResto++;
         System.out.println("Nombre de demandes de resto : " + compteurResto);
     }
+
+    /**
+     * demanderServiceAdresse : récuperre les données du trafic et les envoi
+     * @param exchange
+     * @throws IOException
+     * @throws InterruptedException
+     */
+    void demanderServiceAdresse(HttpExchange exchange, String adresse) throws IOException, InterruptedException {
+        String response = this.serviceTrafic.lancerRequete("https://api-adresse.data.gouv.fr/search/?q="+adresse);
+        JSONObject obj = new JSONObject(response);
+        sendJsonResponse(exchange, obj.toString());
+        compteurAdresse++;
+        System.out.println("Nombre de demandes d'adresse : "+ compteurAdresse);
+    }
 }
