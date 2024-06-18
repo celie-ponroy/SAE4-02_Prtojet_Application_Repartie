@@ -12,6 +12,7 @@ let formRestorant = function (event) {
 }
 
 let formReserver = function () {
+    console.log(lastClickedRestaurant);
     //récupération et affichage du template stationInfo
     let htmlStationInfo = document.getElementById("stationInfo");
     let formReservationRestoTemplate = document.getElementById("reservationRestoTemplate");
