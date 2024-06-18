@@ -152,6 +152,7 @@ public class Serveur implements InterfaceResto {
                         .put("adresse", resultSet.getString("adresse"))
                         .put("xGPS", resultSet.getString("xgps"))
                         .put("yGPS", resultSet.getString("ygps"))
+                        .put("nbPlaces", resultSet.getInt("nbPlaces"))
                 );
                 res.put("restaurants", restaurants);
             }
