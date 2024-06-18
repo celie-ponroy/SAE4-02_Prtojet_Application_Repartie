@@ -28,9 +28,8 @@ async function infoStations() {
 
 async function infoRestaurants() {
     try {
-        let fetchBD = await fetch("http://localhost:8001/resto");
+        let fetchBD = await fetch("http://localhost:8001/getRestaurants");
         let restaurantJSON = await fetchBD.json();
-        
         if (restaurantJSON === undefined || restaurantJSON.error !== "") {
             alert("error : " + restaurantJSON.error);
             return;
@@ -47,7 +46,7 @@ async function infoRestaurants() {
             let address = restaurant.addresse;
             let lat = restaurant.xGPS;
             let lon = restaurant.yGPS;
-            restaurantList.push({ id, name, address, lat, lon })
+            restaurantList.push({id, name, address, lat, lon})
         })
         return restaurantList;
     } catch (error) {

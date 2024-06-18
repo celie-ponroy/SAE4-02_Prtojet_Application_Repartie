@@ -16,7 +16,6 @@
 <body>
 <div id="map"></div>
 <div id="stationInfo"></div>
-<div id="flex-items-center"><p>zefvsergdvqrgsdvs</p></div>
 <div id="formResto"></div>
 
 <!-- Script Leaflet CSS -->
@@ -41,15 +40,23 @@
     <h2>Création resto: </h2>
     <form id="formRestoInTemplate">
         <label>Nom du restaurant :</label></br>
-        <input type="text" id="nomResto" ></br>
+        <input type="text" id="nomResto"></br>
         <span id="errorNomResto" style="color:red;"></span></br></br>
 
         <label>Adresse :</label></br>
-        <input type="text" id="adresse" ></br>
+        <input type="text" id="adresse"></br>
         <span id="errorAdresse" style="color:red;"></span></br></br>
 
+        <label>lat :</label></br>
+        <input type="text" id="lat"></br>
+        <span id="errorLat" style="color:red;"></span></br></br>
+
+        <label>lng :</label></br>
+        <input type="text" id="lng"></br>
+        <span id="errorLng" style="color:red;"></span></br></br>
+
         <label>Nombre de places :</label></br>
-        <input type="number" id="nombrePlaces" ></br>
+        <input type="number" id="nombrePlaces"></br>
         <span id="errorNombrePlaces" style="color:red;"></span></br></br>
 
         <input type="submit" value="Valider">

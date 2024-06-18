@@ -2,7 +2,7 @@ import fetch from "./fetch.js";
 import ui from "./ui.js"
 import form from "./form.js"
 //icone a définir
-var myIcon = L.icon({
+const myIcon = L.icon({
     iconUrl: './img/bike.svg',
     iconSize: [38, 95],
     iconAnchor: [22, 94],
@@ -12,7 +12,7 @@ var myIcon = L.icon({
 });
 
 //icone a définir
-var myIcon2 = L.icon({
+const myIcon2 = L.icon({
     iconUrl: './img/parking.svg',
     iconSize: [38, 95],
     iconAnchor: [22, 94],
@@ -24,46 +24,35 @@ var myIcon2 = L.icon({
 // Variable contenant le dernier marker clické
 let lastClicked = undefined;
 
-let init = async function () {
+let init =  async function () {
     //Création de la map
     // setView([latitude,longitude], zoom)
     let map = L.map('map').setView([48.688135, 6.171586], 13);
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        // maxZoom: 18,
-        // minZoom: 12,
+        maxZoom: 18,
+        minZoom: 12,
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
 
     //addEventListeneur pour contextMenu
-    map.on('contextmenu', function (){form.formRestorant();console.log("click")});
-    document.getElementById("formResto").addEventListener("submit", (event) => {form.callbackFormResto(event)});
+    map.on('contextmenu', function (event) {
+        form.formRestorant(event);
+        console.log("click")
+    });
+
+    document.getElementById("formResto").addEventListener("submit", (event) => {
+        form.callbackFormResto(event)
+    });
 
     //récupération des infos des stations
-    // let infoStations = await fetch.infoStations();
-    // if (infoStations !== undefined) {
-    //     infoStations.forEach(station => {
-    //         //ajout des markers
-    //         let marker = L.marker([station.lat, station.lon]);
-    //         marker.on('click', function () {
-    //             //affichage des infos de la station apres un click
-    //             ui.displayInfoStation(station)
-    //             //changement des icones du dernier et du nouveau marker clické
-    //             if (lastClicked !== undefined) {
-    //                 lastClicked.setIcon(myIcon2)
-    //             }
-    //             this.setIcon(myIcon)
-    //             lastClicked = this;
-    //         }).addTo(map)
-    //     });
-    // }
-
-    let infoRestaurants = await fetch.infoRestaurants();
-    if (infoRestaurants !== undefined) {
-        infoRestaurants.forEach(restaurant => {
-            let marker = L.marker([restaurant.lat, restaurant.lon]);
+    let infoStations = await fetch.infoStations();
+    if (infoStations !== undefined) {
+        infoStations.forEach(station => {
+            //ajout des markers
+            let marker = L.marker([station.lat, station.lon]);
             marker.on('click', function () {
-                //affichage des infos du restaurant apres un click
-                ui.displayInfoRestaurant(restaurant)
+                //affichage des infos de la station apres un click
+                ui.displayInfoStation(station)
                 //changement des icones du dernier et du nouveau marker clické
                 if (lastClicked !== undefined) {
                     lastClicked.setIcon(myIcon2)
@@ -76,3 +65,7 @@ let init = async function () {
 };
 
 init();
+
+export default {
+    map:map
+}

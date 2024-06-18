@@ -1,9 +1,15 @@
-let formRestorant = function () {
+import ui from "./ui";
+
+let formRestorant = function (event) {
     //récupération et affichage du template stationInfo
+    console.log(event);
     let htmlFormResto = document.getElementById("formResto");
     let formRestoTemplate = document.getElementById("creationRestoTemplate");
     let template = Handlebars.compile(formRestoTemplate.innerHTML);
     htmlFormResto.innerHTML = template({});
+
+    document.getElementById("lat").value = event.latlng.lat;
+    document.getElementById("lng").value = event.latlng.lng;
 }
 
 let callbackFormResto = async function (e) {
@@ -13,16 +19,22 @@ let callbackFormResto = async function (e) {
     let nomResto = document.getElementById('nomResto');
     let adresse = document.getElementById('adresse');
     let nombrePlaces = document.getElementById('nombrePlaces');
+    let lat = document.getElementById('lat');
+    let lng = document.getElementById('lng');
 
     // Récupèration des éléments permétant d'afficher les erreurs
     let errorNomResto = document.getElementById('errorNomResto');
     let errorAdresse = document.getElementById('errorAdresse');
     let errorNombrePlaces = document.getElementById('errorNombrePlaces');
+    let errorLat = document.getElementById('errorLat');
+    let errorLng = document.getElementById('errorLng');
 
     // Réinitialise des messages d'erreur
     errorNomResto.textContent = '';
     errorAdresse.textContent = '';
     errorNombrePlaces.textContent = '';
+    errorLng.textContent = '';
+    errorLat.textContent = '';
 
     let isValid = true;
 
@@ -31,17 +43,6 @@ let callbackFormResto = async function (e) {
         errorNomResto.textContent = 'Le champ "Nom du restaurant" doit être rempli';
         isValid = false;
     }
-
-
-    /*let fetchAddresse = await fetch(`http://localhost:8001/adress/${adresse}`);
-    let response = await fetchAddresse.json();
-    console.log(response);
-    /**if(response.code !== undefined && response.code == 400){
-        errorAdresse.textContent = "Aucunne adresse corespondante n'as été trouvé";
-        isValid = false;
-    }else{
-        console.log(response.features[0].properties.label);
-    }*/
 
     if (adresse.value.trim() === '') {
         errorAdresse.textContent = 'Le champ "Adresse" doit être rempli';
@@ -53,6 +54,28 @@ let callbackFormResto = async function (e) {
         isValid = false;
     }
 
+    if (lng.value.trim() === '' || nombrePlaces.value <= 0) {
+        errorLng.textContent = 'Le champ "Longitude" doit être rempli avec une valeur positive';
+        isValid = false;
+    }
+
+    if (lat.value.trim() === '' || nombrePlaces.value <= 0) {
+        errorLat.textContent = 'Le champ "Latitude" doit être rempli avec une valeur positive';
+        isValid = false;
+    }
+
+    let marker = L.marker([station.lat, station.lon]);
+    marker.on('click', function () {
+        //affichage des infos de la station apres un click
+        ui.displayInfoStation(station)
+        //changement des icones du dernier et du nouveau marker clické
+        if (lastClicked !== undefined) {
+            lastClicked.setIcon(myIcon2)
+        }
+        this.setIcon(myIcon)
+    }).addTo(map)
+
+
     // Submit formulaire
     if (isValid) {
         e.target.submit();
@@ -61,24 +84,7 @@ let callbackFormResto = async function (e) {
 
 export default {
     formRestorant: formRestorant,
-    callbackFormResto: callbackFormResto
+    callbackFormResto: callbackFormResto,
 }
 
-/*<div contextmenu="menu" id="box">
-	Right click to get the context menu demo.
-</div>
-
-<menu type="context" id="menu">
-
-	<menuitem type="checkbox" id="move">Moooove</menuitem>
-
-	<menuitem type="command" label="Test me" id="custom">Hello World!</menuitem>
-
-	<menuitem type="radio" name="aligngroup" value="left">Align Left</menuitem>
-
-	<menuitem type="radio" name="aligngroup" value="right">Align Right</menuitem>
-
-	<menuitem type="radio" name="aligngroup" checked="true" value="center">Align Center</menuitem>
-
-	<menuitem type="checkbox" disabled>Disabled menu item</menuitem>
-</menu>*/
+/**/
