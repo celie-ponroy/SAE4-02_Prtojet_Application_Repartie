@@ -88,9 +88,9 @@ async function init() {
     }
 
     // Récupération des données météo
-    let meteoData = await fetchMeteo(); // Récupère les données météo
+    let meteoData = await fetch.fetchMeteo(); // Récupère les données météo
     if (meteoData) {
-        displayInfoMeteo(meteoData); // Affiche les données météo
+        ui.displayInfoMeteo(meteoData); // Affiche les données météo
     }
 
     // Afficher l'onglet "Accueil" par défaut lors du chargement de la page
