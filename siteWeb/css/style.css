@@ -78,6 +78,15 @@
     overflow-y: auto; /* Permet de défiler si le contenu est trop grand */
 }
 
+/* Style pour le nom de la station */
+.nom {
+    padding: 10px;
+    font-size: 16px;
+    color: #333;
+    text-align: left;
+    text-align: center;
+}
+
 /* Style de la barre météo */
 .meteo-info-bar {
     position: fixed;

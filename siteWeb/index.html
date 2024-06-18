@@ -24,8 +24,7 @@
             <div class="meteo-header">
                 <h2>Météo</h2>
             </div>
-            <div class="meteo-content">
-            </div>
+            <div class="meteo-content"></div>
         </div>
 
         <!-- Contenu des onglets -->
@@ -37,9 +36,7 @@
         </div>
         <div id="compteRendu" class="tab-content" style="display: none;">
             <h2>Compte rendu</h2>
-            <p>Contenu du compte rendu...
-                A completer
-            </p>
+            <iframe src="https://docs.google.com/document/d/e/2PACX-1vSRQE8RNNnVo0q3A6jJwmVFHOZGDvQuJehAm-KJx245UYQCXVK-bgMZfdQlxeU4luygW6VRPgYYBUF7/pub?embedded=true" style="width: 100%; height: 80vh; border: none;"></iframe>
         </div>
         <div id="formResto"></div>
     </div>
@@ -50,7 +47,9 @@
             crossorigin="" defer></script>
     <!-- Script Template -->
     <script id="stationTemplate" type="text/x-handlebars-template">
-        <h2>Stations Vlib: </h2>
+        <div class="nom">
+            <h2>Station Velib </h2>
+        </div>
         <div>
             <h4>{{this.name}} :</h4>
             <div>
@@ -64,7 +63,10 @@
     </script>
 
     <script id="traficTemplate" type="text/x-handlebars-template">
-        <h2>Info Trafic: </h2>
+        <div class="nom">
+            <h2>Info Trafic </h2>
+        </div>
+        
         <div>
             <h4><img src="img/attention_panneau.png" alt="attention" height="35" width="35"> {{this.shortDescription}} :</h4>
             <p>{{this.description}}</p>
@@ -76,7 +78,10 @@
     </script>
 
     <script id="restoTemplate" type="text/x-handlebars-template">
-        <h2>Restaurant: </h2>
+        <div class="nom">
+            <h2>Restaurant </h2>
+        </div>
+        
         <div>
             <h4><img src="img/restaurant.png" alt="restaurant" height="35" width="35"/>{{this.nomResto}}</h4>
             <p><img src="img/gps.svg" alt="gps" height="30" width="30">{{this.address}}</p>
