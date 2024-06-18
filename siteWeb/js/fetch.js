@@ -34,7 +34,6 @@ async function infoRestaurants() {
     try {
         let fetchBD = await fetch("http://localhost:8001/getRestaurants");
         let restaurantJSON = await fetchBD.json();
-        
         if (restaurantJSON === undefined || restaurantJSON.error !== "") {
             alert("error : " + restaurantJSON.error);
             return;
