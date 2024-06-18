@@ -9,14 +9,18 @@ public class LancerSerciceRMI {
 
         int port = 1099;
         String host = "localhost";
+        boolean doProxy = false;
         if (args.length > 0) {
-            host = args[0];
-            if (args.length > 1)
-                port = Integer.parseInt(args[0]);
+            doProxy = Boolean.parseBoolean(args[0]);
+            if (args.length > 1) {
+                host = args[1];
+                if (args.length > 2)
+                    port = Integer.parseInt(args[2]);
+            }
         }
 
         try {
-            ServiceRMI service = new ServiceRMI();
+            ServiceRMI service = new ServiceRMI(doProxy);
             InterfaceServiceRMI rd = (InterfaceServiceRMI) UnicastRemoteObject.exportObject(service, 0);
 
             Registry reg = LocateRegistry.getRegistry(host, port);

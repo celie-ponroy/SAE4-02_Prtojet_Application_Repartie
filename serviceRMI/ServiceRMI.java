@@ -10,6 +10,12 @@ import java.io.IOException;
 
 
 public class ServiceRMI implements InterfaceServiceRMI {
+    boolean doProxy = false;
+
+    public ServiceRMI(boolean doProxy) {
+        this.doProxy = doProxy;
+    }
+
     /**
      * Methode qui permet de lancer une requete pour acceder a Info Trafic et la reourne
      */
@@ -17,9 +23,14 @@ public class ServiceRMI implements InterfaceServiceRMI {
         System.out.println("Debut requete Info Trafic");
 
         // creer un http client
-        HttpClient client = HttpClient.newBuilder()
-                .proxy(ProxySelector.of(new InetSocketAddress("www-cache.iutnc.univ-lorraine.fr", 3128)))
-                .build();
+        HttpClient client;
+        if (doProxy) {
+            client = HttpClient.newBuilder()
+                    .proxy(ProxySelector.of(new InetSocketAddress("www-cache.iutnc.univ-lorraine.fr", 3128)))
+                    .build();
+        } else {
+            client = HttpClient.newBuilder().build();
+        }
 
         // faire une requete sur l'api
         HttpRequest request = HttpRequest.newBuilder()
