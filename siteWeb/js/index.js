@@ -2,6 +2,7 @@ import fetch from "./fetch.js";
 import ui from "./ui.js"
 import form from "./form.js"
 
+
 var iconVeloCourant = L.icon({
     iconUrl: './img/bike.svg',
     iconSize: [38, 95],
@@ -51,6 +52,8 @@ var iconTrafic = L.icon({
     shadowAnchor: [22, 84]
 });
 
+export let lastClickedRestaurant;
+
 
 // Fonction d'initialisation
 async function init() {
@@ -69,7 +72,7 @@ async function init() {
 // Variables pour stocker les derniers marqueurs cliqués
 
     let lastClickedStation;
-    let lastClickedRestaurant;
+
     let lastClikedTrafic;
 
 
@@ -103,6 +106,16 @@ async function init() {
 
     document.getElementById("formResto").addEventListener("submit", (event) => {
         form.callbackFormResto(event)
+    });
+
+    //addEventListeneur pour reservation de réstaurant
+    document.getElementById("stationInfo").addEventListener('click', function (event) {
+        console.log(event.target);
+        form.formReserver();
+    });
+
+    document.getElementById("stationInfo").addEventListener("submit", (event) => {
+        form.callbackFormReservationResto(event);
     });
 
 
