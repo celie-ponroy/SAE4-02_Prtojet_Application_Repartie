@@ -28,7 +28,7 @@
 
 /* Style des boutons de la barre de navigation au survol */
 .sidebar button:hover {
-    background-color: #5c1ea83e;;
+    background-color: #5c1ea83e;
 }
 
 /* Style du contenu principal */
@@ -46,14 +46,36 @@
     display: none; /* Par défaut, masquer tous les onglets */
 }
 
+/* Conteneur de la carte et des infos */
+#mapContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+}
+
 /* Style de la carte */
 #map {
-    margin-top: 50px; /* Espace entre la carte et la barre de météo */
-    width: 80%; /* Largeur de la carte en pourcentage */
-    height: 60vh; /* Hauteur de la carte en pourcentage de la hauteur visible */
-    max-width: 800px; /* Limite maximale pour la largeur de la carte */
+    width: 70%; /* Largeur de la carte */
+    height: 60vh; /* Hauteur de la carte */
+    max-width: 800px;
     border: 1px solid hsl(282, 85%, 48%);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    flex-grow: 1;
+}
+
+/* Style de l'encadré des infos */
+#stationInfo {
+    width: 30%; /* Largeur de l'encadré */
+    height: 60vh; /* Correspond à la hauteur de la carte */
+    margin-left: 20px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow-y: auto; /* Permet de défiler si le contenu est trop grand */
 }
 
 /* Style de la barre météo */
@@ -118,4 +140,3 @@ html, body {
     height: 25px; /* Hauteur de l'icône */
     margin-bottom: 5px;
 }
-
