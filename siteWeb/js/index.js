@@ -27,7 +27,7 @@ var iconRestoCourant = L.icon({
     shadowAnchor: [22, 84]
 });
 
-var iconRestos = L.icon({
+export var iconRestos = L.icon({
     iconUrl: './img/icon_resto.png',
     iconSize: [23, 40],
     popupAnchor: [-3, -76],
@@ -99,7 +99,6 @@ async function init() {
     //addEventListeneur pour contextMenu
     map.on('contextmenu', function (event) {
         form.formRestorant(event);
-        console.log("click")
     });
 
     document.getElementById("formResto").addEventListener("submit", (event) => {
