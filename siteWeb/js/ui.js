@@ -1,3 +1,6 @@
+/*Fichier contenant les fonctions d'affichage des données */
+
+//Fonction pour afficher les informations des stations de vélo
 function displayInfoStations(station) {
     //récupération et affichage du template stationInfo
     let htmlStation = document.getElementById("stationInfo");
@@ -39,6 +42,18 @@ htmlTrafic.innerHTML = template({
     });
 }
 
+function displayInfoMeteo(temperatures) {
+    const meteoInfoDiv = document.getElementById('meteoInfo');
+    const meteoTemplate = document.getElementById('meteoTemplate');
+    const template = Handlebars.compile(meteoTemplate.innerHTML);
+    meteoInfoDiv.innerHTML += template({
+        temperatures: temperatures
+    });
+}
+
 export default {
-    displayInfoStation: displayInfoStations, displayInfosTrafic : displayInfosTrafic, displayInfosResto : displayInfosResto
+    displayInfoStation: displayInfoStations,
+    displayInfosTrafic,
+    displayInfosResto,
+    displayInfoMeteo
 }

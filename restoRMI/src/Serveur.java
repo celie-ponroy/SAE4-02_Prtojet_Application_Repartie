@@ -150,6 +150,7 @@ public class Serveur implements InterfaceResto {
                         .put("numResto", resultSet.getInt("numResto"))
                         .put("nomResto", resultSet.getString("nomResto"))
                         .put("adresse", resultSet.getString("adresse"))
+                        .put("nbPlaces", resultSet.getInt("nbPlaces"))
                         .put("xGPS", resultSet.getString("xgps"))
                         .put("yGPS", resultSet.getString("ygps"))
                         .put("nbPlaces", resultSet.getInt("nbPlaces"))
@@ -197,6 +198,7 @@ public class Serveur implements InterfaceResto {
                         .put("numResto", resultSet.getInt("numResto"))
                         .put("nomResto", resultSet.getString("nomResto"))
                         .put("adresse", resultSet.getString("adresse"))
+                        .put("nbPlaces", resultSet.getInt("nbPlaces"))
                         .put("xGPS", resultSet.getString("xgps"))
                         .put("yGPS", resultSet.getString("ygps"))
                 );

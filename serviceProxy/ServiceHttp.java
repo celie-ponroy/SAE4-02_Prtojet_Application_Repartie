@@ -30,6 +30,9 @@ public class ServiceHttp {
         this.serviceResto = serviceR;
         this.serviceTrafic = servT;
         httpServer = HttpServer.create(new InetSocketAddress("localhost", port), 0);
+
+        // Gestion Trafic
+
         httpServer.createContext("/trafic",
                 new HttpHandler() {
                     @Override
@@ -37,11 +40,97 @@ public class ServiceHttp {
                         handleRequest(exchange, (e) -> demanderServiceTrafic(e));
                     }
                 });
-        httpServer.createContext("/resto",
+
+        // Gestion Resto
+
+        // GET requests
+
+        httpServer.createContext("/getRestaurants",
                 new HttpHandler() {
                     @Override
                     public void handle(HttpExchange exchange) throws IOException {
-                        handleRequest(exchange, (e) -> demanderServiceResto(e));
+                        handleRequest(exchange, (e) -> serviceRestoGetRestaurants(e));
+                    }
+                });
+        httpServer.createContext("/getRestaurant",
+                new HttpHandler() {
+                    @Override
+                    public void handle(HttpExchange exchange) throws IOException {
+                        String path = exchange.getRequestURI().getPath();
+                        String[] parts = path.split("/");
+                        if (parts.length > 2) {
+                            String id = parts[2];
+                            int idInt = Integer.parseInt(id);
+                            handleRequest(exchange, (e) -> serviceRestoGetRestaurant(e, idInt));
+                        } else {
+                            handleRequest(exchange, (e) -> serviceRestoGetRestaurants(e));
+                        }
+                    }
+                });
+        httpServer.createContext("/deleteRestaurant",
+                new HttpHandler() {
+                    @Override
+                    public void handle(HttpExchange exchange) throws IOException {
+                        String path = exchange.getRequestURI().getPath();
+                        String[] parts = path.split("/");
+                        if (parts.length > 2) {
+                            String id = parts[2];
+                            int idInt = Integer.parseInt(id);
+                            handleRequest(exchange, (e) -> serviceRestoDeleteRestaurant(e, idInt));
+                        } else {
+                            handleRequest(exchange, (e) -> serviceRestoGetRestaurants(e));
+                        }
+                    }
+                });
+
+        // POST requests
+
+        httpServer.createContext("/createRestaurant",
+                new HttpHandler() {
+                    @Override
+                    public void handle(HttpExchange exchange) throws IOException {
+                        handleRequest(exchange, (e) -> {
+                            String body = new String(e.getRequestBody().readAllBytes());
+                            JSONObject obj = new JSONObject(body);
+                            String nom = obj.getString("nom");
+                            String adresse = obj.getString("adresse");
+                            int nbPlaces = obj.getInt("nbPlaces");
+                            double xGPS = obj.getDouble("xGPS");
+                            double yGPS = obj.getDouble("yGPS");
+                            serviceRestoCreateRestaurant(e, nom, adresse, nbPlaces, xGPS, yGPS);
+                        });
+                    }
+                });
+
+        httpServer.createContext("/setReservation",
+                new HttpHandler() {
+                    @Override
+                    public void handle(HttpExchange exchange) throws IOException {
+                        handleRequest(exchange, (e) -> {
+                            String body = new String(e.getRequestBody().readAllBytes());
+                            JSONObject obj = new JSONObject(body);
+                            String nomClient = obj.getString("nomClient");
+                            String prenomClient = obj.getString("prenomClient");
+                            int nbConvives = obj.getInt("nbConvives");
+                            String numTel = obj.getString("numTel");
+                            int numRestaurant = obj.getInt("numRestaurant");
+                            String date = obj.getString("date");
+                            serviceRestoSetReservation(e, nomClient, prenomClient, nbConvives, numTel, numRestaurant, date);
+                        });
+                    }
+                });
+
+        httpServer.createContext("/getRestaurantNbReservations",
+                new HttpHandler() {
+                    @Override
+                    public void handle(HttpExchange exchange) throws IOException {
+                        handleRequest(exchange, (e) -> {
+                            String body = new String(e.getRequestBody().readAllBytes());
+                            JSONObject obj = new JSONObject(body);
+                            int numRestaurant = obj.getInt("numRestaurant");
+                            String date = obj.getString("date");
+                            serviceRestoGetRestaurantNbReservations(e, numRestaurant, date);
+                        });
                     }
                 });
 
@@ -72,6 +161,7 @@ public class ServiceHttp {
 
     /**
      * sendJsonResponse : envoi d'une réponse JSON à un client HTTP
+     *
      * @param exchange
      * @param jsonResponse
      * @throws IOException
@@ -93,6 +183,7 @@ public class ServiceHttp {
 
     /**
      * demanderServiceTrafic : récuperre les données du trafic et les envoi
+     *
      * @param exchange
      * @throws IOException
      * @throws InterruptedException
@@ -102,20 +193,106 @@ public class ServiceHttp {
         JSONObject obj = new JSONObject(response);
         sendJsonResponse(exchange, obj.toString());
         compteurTrafic++;
-        System.out.println("Nombre de demandes de trafic : "+compteurTrafic);
+        System.out.println("Nombre de demandes de trafic : " + compteurTrafic);
     }
 
     /**
-     * demanderServiceResto : récuperre les données du restaurant et les envoi
+     * serviceRestoGetRestaurants : retourne la liste des restaurants
+     *
      * @param exchange
      * @throws IOException
      * @throws InterruptedException
      */
-    void demanderServiceResto(HttpExchange exchange) throws IOException, InterruptedException {
+    void serviceRestoGetRestaurants(HttpExchange exchange) throws IOException, InterruptedException {
         String response = serviceResto.getRestaurants();
         JSONObject obj = new JSONObject(response);
         sendJsonResponse(exchange, obj.toString());
         compteurResto++;
-        System.out.println("Nombre de demandes de resto : "+compteurResto);
+        System.out.println("Nombre de demandes de resto : " + compteurResto);
+    }
+
+    /**
+     * serviceRestoGetRestaurant : retourne un restaurant
+     *
+     * @param exchange
+     * @param id
+     * @throws IOException
+     */
+    void serviceRestoGetRestaurant(HttpExchange exchange, int id) throws IOException, InterruptedException {
+        String response = serviceResto.getRestaurant(id);
+        JSONObject obj = new JSONObject(response);
+        sendJsonResponse(exchange, obj.toString());
+        compteurResto++;
+        System.out.println("Nombre de demandes de resto : " + compteurResto);
+    }
+
+    /**
+     * serviceRestoDeleteRestaurant : supprime un restaurant
+     *
+     * @param exchange
+     * @param id
+     * @throws IOException
+     */
+    void serviceRestoDeleteRestaurant(HttpExchange exchange, int id) throws IOException {
+        String response = serviceResto.deleteRestaurant(id);
+        JSONObject obj = new JSONObject(response);
+        sendJsonResponse(exchange, obj.toString());
+        compteurResto++;
+        System.out.println("Nombre de demandes de resto : " + compteurResto);
+    }
+
+    /**
+     * serviceRestoGetRestaurantNbReservations : retourne le nombre de réservations d'un restaurant
+     *
+     * @param exchange
+     * @param id
+     * @param date
+     * @throws IOException
+     */
+    void serviceRestoGetRestaurantNbReservations(HttpExchange exchange, int id, String date) throws IOException {
+        String response = serviceResto.getRestaurantNbReservations(id, date);
+        JSONObject obj = new JSONObject(response);
+        sendJsonResponse(exchange, obj.toString());
+        compteurResto++;
+        System.out.println("Nombre de demandes de resto : " + compteurResto);
+    }
+
+    /**
+     * serviceRestoCreateRestaurant : crée un restaurant
+     *
+     * @param exchange
+     * @param nom
+     * @param adresse
+     * @param nbPlaces
+     * @param xGPS
+     * @param yGPS
+     * @throws IOException
+     */
+    void serviceRestoCreateRestaurant(HttpExchange exchange, String nom, String adresse, int nbPlaces, double xGPS, double yGPS) throws IOException {
+        String response = serviceResto.createRestaurant(nom, adresse, nbPlaces, xGPS, yGPS);
+        JSONObject obj = new JSONObject(response);
+        sendJsonResponse(exchange, obj.toString());
+        compteurResto++;
+        System.out.println("Nombre de demandes de resto : " + compteurResto);
+    }
+
+    /**
+     * serviceRestoSetReservation : crée une réservation
+     *
+     * @param exchange
+     * @param nomClient
+     * @param prenomClient
+     * @param nbConvives
+     * @param numTel
+     * @param numRestaurant
+     * @param date
+     * @throws IOException
+     */
+    void serviceRestoSetReservation(HttpExchange exchange, String nomClient, String prenomClient, int nbConvives, String numTel, int numRestaurant, String date) throws IOException {
+        String response = serviceResto.setReservation(nomClient, prenomClient, nbConvives, numTel, numRestaurant, date);
+        JSONObject obj = new JSONObject(response);
+        sendJsonResponse(exchange, obj.toString());
+        compteurResto++;
+        System.out.println("Nombre de demandes de resto : " + compteurResto);
     }
 }

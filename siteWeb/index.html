@@ -14,8 +14,32 @@
 </head>
 
 <body>
-<div id="map"></div>
-<div id="stationInfo"></div>
+    <div class="sidebar">
+        <button onclick="showTab('accueil')">Accueil</button>
+        <button onclick="showTab('compteRendu')">Compte rendu</button>
+    </div>
+    <div class="main-content" id="mainContent">
+        <!-- Barre de météo -->
+        <div id="meteoInfo" class="meteo-info-bar">
+            <div class="meteo-header">
+                <h2>Météo</h2>
+            </div>
+            <div class="meteo-content">
+            </div>
+        </div>
+
+        <!-- Contenu des onglets -->
+        <div id="accueil" class="tab-content" style="display: block;">
+            <div id="map"></div>
+            <div id="stationInfo"></div>
+        </div>
+        <div id="compteRendu" class="tab-content" style="display: none;">
+            <h2>Compte rendu</h2>
+            <p>Contenu du compte rendu...
+                A completer
+            </p>
+        </div>
+    </div>
 
 
 <!-- Script Leaflet CSS -->
@@ -33,31 +57,61 @@
             <img src="img/parking.svg" alt="docks" height="15" width="15"/>
             {{this.nbDock}}
         </div>
-        <div><p>Address : {{this.address}}</p></div>
+        <div><p>Addresse : {{this.address}}</p></div>
     </div>
 </script>
 
-<script id="traficTemplate" type="text/x-handlebars-template">
-    <h2>Info Trafic: </h2>
-    <div>
-        <h4><img src="img/attention_panneau.png" alt="attention" height="35" width="35"> {{this.shortDescription}} :</h4>
-        <p>{{this.description}}</p>
-        <p><img src="img/gps.svg" alt="gps" height="30" width="30">{{this.adresse}}</p>
-        <p><b>Date de début : </b>{{this.dateDebut}}</p>
-        <p><b>Date de fin : </b> {{this.dateFin}}</p>
-        <p><b>Type : </b>{{this.type}}</p>
-    </div>
-</script>
+    <script id="traficTemplate" type="text/x-handlebars-template">
+        <h2>Info Trafic: </h2>
+        <div>
+            <h4><img src="img/attention_panneau.png" alt="attention" height="35" width="35"> {{this.shortDescription}} :</h4>
+            <p>{{this.description}}</p>
+            <p><img src="img/gps.svg" alt="gps" height="30" width="30">{{this.adresse}}</p>
+            <p><b>Date de début : </b>{{this.dateDebut}}</p>
+            <p><b>Date de fin : </b> {{this.dateFin}}</p>
+            <p><b>Type : </b>{{this.type}}</p>
+        </div>
+    </script>
 
-<script id="restoTemplate" type="text/x-handlebars-template">
-    <h2>Restaurant: </h2>
-    <div>
-        <h4><img src="img/restaurant.png" alt="restaurant" height="35" width="35"/>{{this.nomResto}}</h4>
-        <p><img src="img/gps.svg" alt="gps" height="30" width="30">{{this.address}}</p>
-        <p><b>lat : </b>{{this.xGPS}} , <b>long : </b>{{this.yGPS}}</p>
-        <p><b>Nombre de places : </b>{{this.nbPlaces}}</p>
-    </div>
-</script>
+    <script id="restoTemplate" type="text/x-handlebars-template">
+        <h2>Restaurant: </h2>
+        <div>
+            <h4><img src="img/restaurant.png" alt="restaurant" height="35" width="35"/>{{this.nomResto}}</h4>
+            <p><img src="img/gps.svg" alt="gps" height="30" width="30">{{this.address}}</p>
+            <p><b>lat : </b>{{this.xGPS}} , <b>long : </b>{{this.yGPS}}</p>
+            <p><b>Nombre de places : </b>{{this.nbPlaces}}</p>
+        </div>
+    </script>
+
+    <!-- Template pour la météo -->
+    <script id="meteoTemplate" type="text/x-handlebars-template">
+        {{#each temperatures}}
+        <div class="meteo-item">
+            <p><strong>{{time}}</strong></p>
+            <img src="{{icon}}" alt="icon" height="25" width="25"/>
+            <p>{{temperature}} °C</p>
+        </div>
+        {{/each}}
+    </script>
+
+    <script>
+        function showTab(tabId) {
+            var tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.style.display = 'none');
+            document.getElementById(tabId).style.display = 'block';
+
+            // Si la carte est visible, redimensionner la carte pour s'adapter au conteneur
+            if (tabId === 'accueil') {
+                setTimeout(() => {
+                    if (window.map) {
+                        window.map.invalidateSize();
+                    }
+                }, 100); // Timeout pour attendre la fin du rendu
+            }
+        }
+    </script>
+
+
 
 <script src="js/index.js" type="module"></script>
 
