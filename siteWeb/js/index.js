@@ -1,7 +1,7 @@
-import fetch from "./fetch.js";
-import ui from "./ui.js"
+import { fetchMeteo, infoStations } from "./fetch.js";
+import { displayInfoMeteo, displayInfoStations } from "./ui.js";
 
-//icone a définir
+// Icônes à définir
 var myIcon = L.icon({
     iconUrl: './img/bike.svg',
     iconSize: [38, 95],
@@ -10,7 +10,6 @@ var myIcon = L.icon({
     shadowAnchor: [22, 94]
 });
 
-//icone a définir
 var myIcon2 = L.icon({
     iconUrl: './img/parking.svg',
     iconSize: [38, 95],
@@ -19,12 +18,12 @@ var myIcon2 = L.icon({
     shadowAnchor: [22, 94]
 });
 
-// Variable contenant le dernier marker clické
+// Variable contenant le dernier marker cliqué
 let lastClicked = undefined;
 
-let init = async function () {
-    //Création de la map
-    // setView([latitude,longitude], zoom)
+// Fonction d'initialisation
+async function init() {
+    // Initialisation de la carte
     let map = L.map('map').setView([48.688135, 6.171586], 13);
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         // maxZoom: 18,
@@ -32,22 +31,21 @@ let init = async function () {
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
 
-    //récupération des infos des stations
-    let infoStations = await fetch.infoStations();
-    if (infoStations !== undefined) {
-        infoStations.forEach(station => {
-            //ajout des markers
+    window.map = map; // Stocke la carte dans window pour accès global
+
+    // Récupération des données des stations
+    let stationsData = await infoStations();
+    if (stationsData) {
+        stationsData.forEach(station => {
             let marker = L.marker([station.lat, station.lon]);
             marker.on('click', function () {
-                //affichage des infos de la station apres un click
-                ui.displayInfoStation(station)
-                //changement des icones du dernier et du nouveau marker clické
-                if (lastClicked !== undefined) {
-                    lastClicked.setIcon(myIcon2)
+                displayInfoStations(station);
+                if (lastClicked) {
+                    lastClicked.setIcon(myIcon2);
                 }
-                this.setIcon(myIcon)
+                this.setIcon(myIcon);
                 lastClicked = this;
-            }).addTo(map)
+            }).addTo(map);
         });
     }
 
@@ -56,8 +54,6 @@ let init = async function () {
         infoRestaurants.forEach(restaurant => {
             let marker = L.marker([restaurant.lat, restaurant.lon]);
             marker.on('click', function () {
-                //affichage des infos du restaurant apres un click
-                ui.displayInfoRestaurant(restaurant)
                 //changement des icones du dernier et du nouveau marker clické
                 if (lastClicked !== undefined) {
                     lastClicked.setIcon(myIcon2)
@@ -67,6 +63,15 @@ let init = async function () {
             }).addTo(map)
         });
     }
-};
 
-init();
+    // Récupération des données météo
+    let meteoData = await fetchMeteo(); // Récupère les données météo
+    if (meteoData) {
+        displayInfoMeteo(meteoData); // Affiche les données météo
+    }
+
+    // Afficher l'onglet "Accueil" par défaut lors du chargement de la page
+    showTab('accueil');
+}
+
+document.addEventListener('DOMContentLoaded', init);
