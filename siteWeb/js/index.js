@@ -1,8 +1,8 @@
 import fetch from "./fetch.js";
 import ui from "./ui.js"
 import form from "./form.js"
-//icone a définir
-const myIcon = L.icon({
+
+var iconVeloCourant = L.icon({
     iconUrl: './img/bike.svg',
     iconSize: [38, 95],
     popupAnchor: [-3, -76],
@@ -10,13 +10,45 @@ const myIcon = L.icon({
     shadowAnchor: [22, 94]
 });
 
-//icone a définir
-const myIcon2 = L.icon({
-    iconUrl: './img/parking.svg',
-    iconSize: [38, 95],
+var iconVelib = L.icon({
+    iconUrl: './img/icon_velib.png',
+    iconSize: [23, 40],
     popupAnchor: [-3, -76],
-    shadowSize: [68, 95],
-    shadowAnchor: [22, 94]
+    shadowSize: [68, 85],
+    shadowAnchor: [22, 84]
+});
+
+
+var iconRestoCourant = L.icon({
+    iconUrl: './img/resto.png',
+    iconSize: [40, 40],
+    popupAnchor: [-3, -76],
+    shadowSize: [68, 85],
+    shadowAnchor: [22, 84]
+});
+
+var iconRestos = L.icon({
+    iconUrl: './img/icon_resto.png',
+    iconSize: [23, 40],
+    popupAnchor: [-3, -76],
+    shadowSize: [68, 85],
+    shadowAnchor: [22, 84]
+});
+
+var iconTraficCourant = L.icon({
+    iconUrl: './img/trafic_courant.png',
+    iconSize: [40, 40],
+    popupAnchor: [-3, -76],
+    shadowSize: [68, 85],
+    shadowAnchor: [22, 84]
+});
+
+var iconTrafic = L.icon({
+    iconUrl: './img/icon_trafic.png',
+    iconSize: [23, 40],
+    popupAnchor: [-3, -76],
+    shadowSize: [68, 85],
+    shadowAnchor: [22, 84]
 });
 
 
@@ -33,12 +65,15 @@ async function init() {
 
     window.map = map; // Stocke la carte dans window pour accès global
 
-    // Variables pour stocker les derniers marqueurs cliqués
+
+// Variables pour stocker les derniers marqueurs cliqués
+
     let lastClickedStation;
     let lastClickedRestaurant;
     let lastClikedTrafic;
 
-    // Récupération des infos des stations
+
+// Récupération des infos des stations
     let infoStations = await fetch.infoStations();
     if (infoStations !== undefined) {
         infoStations.forEach(station => {
@@ -60,6 +95,7 @@ async function init() {
         });
     }
 
+
     //addEventListeneur pour contextMenu
     map.on('contextmenu', function (event) {
         form.formRestorant(event);
@@ -70,7 +106,8 @@ async function init() {
         form.callbackFormResto(event)
     });
 
-    // Récupération des infos des restaurants
+
+// Récupération des infos des restaurants
     let infoRestaurants = await fetch.infoRestaurants();
     if (infoRestaurants !== undefined) {
         infoRestaurants.forEach(restaurant => {
@@ -90,6 +127,7 @@ async function init() {
             }).addTo(map);
         });
     }
+
 
     let infosTrafic = await fetch.infosTrafic();
     if (infosTrafic !== undefined) {
