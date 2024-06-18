@@ -29,7 +29,7 @@ public class ServiceHttp {
     ServiceHttp(InterfaceServiceRMI servT, InterfaceResto serviceR) throws IOException, InterruptedException {
         this.serviceResto = serviceR;
         this.serviceTrafic = servT;
-        httpServer = HttpServer.create(new InetSocketAddress("localhost", port), 0);
+        httpServer = HttpServer.create(new InetSocketAddress("127.0.0.1", port), 0);
 
         // Gestion Trafic
 

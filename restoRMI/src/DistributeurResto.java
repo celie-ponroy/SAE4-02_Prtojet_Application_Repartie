@@ -8,10 +8,9 @@ public class DistributeurResto {
         int port = 1099;
         String host = "localhost";
         if (args.length > 0) {
-            port = Integer.parseInt(args[0]);
-            if (args.length > 1) {
-                host = args[1];
-            }
+            host = args[1];
+            if (args.length > 1)
+                port = Integer.parseInt(args[0]);
         }
 
         try {
@@ -19,9 +18,11 @@ public class DistributeurResto {
             InterfaceResto rd = (InterfaceResto) UnicastRemoteObject.exportObject(service, 0);
 
             Registry reg = LocateRegistry.getRegistry(host, port);
-            reg.rebind("DistributeurResto", rd);
+            InterfaceService distributeurServices = (InterfaceService) reg.lookup("DistributeurServices");
 
-            System.out.println("Serveur RestoRMI pret (connecte a : " + host + " sur le port " + port + ")");
+            distributeurServices.enregistrerDistributeurResto(rd);
+
+            System.out.println("Service RestoRMI pret (connecte a : " + host + " sur le port " + port + ")");
         } catch (java.rmi.ConnectException e) {
             System.out.println("Serveur RMI non accessible : " + e.getMessage());
         } catch (java.rmi.UnmarshalException e) {
@@ -31,6 +32,8 @@ public class DistributeurResto {
         } catch (java.rmi.AccessException e) {
             System.out.println("Acces refuse : " + e.getMessage());
         } catch (java.rmi.RemoteException e) {
+            System.out.println("Erreur RMI : " + e.getMessage());
+        } catch (java.rmi.NotBoundException e) {
             System.out.println("Erreur RMI : " + e.getMessage());
         }
     }
