@@ -174,7 +174,7 @@ let callbackFormReservationResto = async function (e) {
             let reservation = {
                 nomClient: nomClient.value,
                 prenomClient: prenomClient.value,
-                nbConvives: nbConvives.value,
+                nbConvives: parseInt(nbConvives.value),
                 numTel: numTel.value,
                 numRestaurant: numRestaurant,
                 date: date.value
