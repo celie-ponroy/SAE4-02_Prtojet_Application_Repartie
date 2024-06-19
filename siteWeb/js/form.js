@@ -180,6 +180,8 @@ let callbackFormReservationResto = async function (e) {
                 date: date.value
             };
 
+            console.log(reservation);
+
             // Envoye requête POST au serveur
             let response = await fetch('http://localhost:8001/setReservation', {
                 method: 'POST',
