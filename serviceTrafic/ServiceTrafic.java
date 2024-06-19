@@ -9,10 +9,10 @@ import java.nio.charset.StandardCharsets;
 import java.io.IOException;
 
 
-public class ServiceRMI implements InterfaceServiceRMI {
+public class ServiceTrafic implements InterfaceTrafic {
     boolean doProxy = false;
 
-    public ServiceRMI(boolean doProxy) {
+    public ServiceTrafic(boolean doProxy) {
         this.doProxy = doProxy;
     }
 

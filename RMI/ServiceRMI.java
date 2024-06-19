@@ -1,13 +1,13 @@
 public class ServiceRMI implements InterfaceService {
 
     InterfaceResto distributeurResto;
-    InterfaceServiceRMI distributeurTrafic;
+    InterfaceTrafic distributeurTrafic;
 
     public void enregistrerDistributeurResto(InterfaceResto distributeurResto) {
         this.distributeurResto = distributeurResto;
     }
 
-    public void enregistrerDistributeurTrafic(InterfaceServiceRMI distributeurTrafic) {
+    public void enregistrerDistributeurTrafic(InterfaceTrafic distributeurTrafic) {
         this.distributeurTrafic = distributeurTrafic;
     }
 
@@ -15,7 +15,7 @@ public class ServiceRMI implements InterfaceService {
         return distributeurResto;
     }
 
-    public InterfaceServiceRMI demanderDistributeurTrafic() {
+    public InterfaceTrafic demanderDistributeurTrafic() {
         return distributeurTrafic;
     }
 

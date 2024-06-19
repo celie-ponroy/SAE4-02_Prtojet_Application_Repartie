@@ -19,7 +19,7 @@ public class LancerServiceHttp {
         InterfaceService distributeurServices = (InterfaceService) reg.lookup("DistributeurServices");
 
         InterfaceResto objService = distributeurServices.demanderDistributeurResto();
-        InterfaceServiceRMI objService2 = distributeurServices.demanderDistributeurTrafic();
+        InterfaceTrafic objService2 = distributeurServices.demanderDistributeurTrafic();
 
         ServiceHttp s = new ServiceHttp(objService2, objService);
 

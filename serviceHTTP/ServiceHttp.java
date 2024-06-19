@@ -18,7 +18,7 @@ import java.nio.charset.StandardCharsets;
  * ServiceHttp : classe permettant de gérer les requêtes HTTP
  */
 public class ServiceHttp {
-    InterfaceServiceRMI serviceTrafic;
+    InterfaceTrafic serviceTrafic;
     InterfaceResto serviceResto;
     HttpServer httpServer;
     int port = 8001;
@@ -26,7 +26,7 @@ public class ServiceHttp {
     static int compteurTrafic = 0;
     static int compteurResto = 0;
 
-    ServiceHttp(InterfaceServiceRMI servT, InterfaceResto serviceR) throws IOException, InterruptedException {
+    ServiceHttp(InterfaceTrafic servT, InterfaceResto serviceR) throws IOException, InterruptedException {
         this.serviceResto = serviceR;
         this.serviceTrafic = servT;
         httpServer = HttpServer.create(new InetSocketAddress("127.0.0.1", port), 0);

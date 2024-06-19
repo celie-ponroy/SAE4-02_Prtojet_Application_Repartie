@@ -4,7 +4,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 
-public class LancerSerciceRMI {
+public class LancerTrafic {
     public static void main(String[] args) {
 
         int port = 1099;
@@ -20,8 +20,8 @@ public class LancerSerciceRMI {
         }
 
         try {
-            ServiceRMI service = new ServiceRMI(doProxy);
-            InterfaceServiceRMI rd = (InterfaceServiceRMI) UnicastRemoteObject.exportObject(service, 0);
+            ServiceTrafic service = new ServiceTrafic(doProxy);
+            InterfaceTrafic rd = (InterfaceTrafic) UnicastRemoteObject.exportObject(service, 0);
 
             Registry reg = LocateRegistry.getRegistry(host, port);
             InterfaceService distributeurServices = (InterfaceService) reg.lookup("DistributeurServices");
