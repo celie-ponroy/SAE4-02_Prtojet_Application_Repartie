@@ -12,7 +12,6 @@ let formRestorant = function (event) {
 }
 
 let formReserver = function () {
-    console.log(lastRestaurant);
     //récupération et affichage du template stationInfo
     let htmlStationInfo = document.getElementById("stationInfo");
     let formReservationRestoTemplate = document.getElementById("reservationRestoTemplate");
@@ -89,8 +88,6 @@ let callbackFormResto = async function (e) {
                 yGPS: lng.value
             };
 
-            console.log(resto);
-
             // Envoye requête POST au serveur
             let response = await fetch('http://localhost:8001/createRestaurant', {
                 method: 'POST',
@@ -99,8 +96,6 @@ let callbackFormResto = async function (e) {
                 },
                 body: JSON.stringify(resto)
             });
-
-            console.log(response);
 
             if (response.ok) {
                 let jsonResponse = await response.json();
@@ -174,13 +169,11 @@ let callbackFormReservationResto = async function (e) {
             let reservation = {
                 nomClient: nomClient.value,
                 prenomClient: prenomClient.value,
-                nbConvives: parseInt(nbConvives.value),
+                nbConvives: nbConvives.value,
                 numTel: numTel.value,
                 numRestaurant: numRestaurant,
                 date: date.value
             };
-
-            console.log(reservation);
 
             // Envoye requête POST au serveur
             let response = await fetch('http://localhost:8001/setReservation', {
@@ -190,8 +183,6 @@ let callbackFormReservationResto = async function (e) {
                 },
                 body: JSON.stringify(reservation)
             });
-
-            console.log(response);
 
             if (response.ok) {
                 let jsonResponse = await response.json();
