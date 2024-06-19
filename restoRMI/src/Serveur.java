@@ -107,7 +107,7 @@ public class Serveur implements InterfaceResto {
             }
 
             PreparedStatement statement = DBConnection.getInstance().prepareStatement("""
-                    INSERT INTO RESERVATION (NUMRESTO, NOMCLIENT, PRENOMCLIENT, NBCONVIVES, NUMTEL, DATERES) VALUES (?, ?, ?, ?, ?, TO_DATE(?, 'DD/MM/YYYY HH24:MI'))
+                    INSERT INTO RESERVATION (NUMRESTO, NOMCLIENT, PRENOMCLIENT, NBCONVIVES, NUMTEL, DATERES) VALUES (?, ?, ?, ?, ?, ?)
                     """);
 
             statement.setInt(1, numRestaurant);
@@ -275,7 +275,7 @@ public class Serveur implements InterfaceResto {
 
             int nbPlaces = resultSet.getInt("NBPLACES");
             PreparedStatement statementCheckReservations = DBConnection.getInstance().prepareStatement("""
-                    SELECT SUM(NBCONVIVES) AS TOTAL FROM RESERVATION WHERE NUMRESTO = ? AND DATERES = TO_DATE(?, 'DD/MM/YYYY HH24:MI')
+                    SELECT SUM(NBCONVIVES) FROM RESERVATION WHERE NUMRESTO = ? AND DATERES = ?
                     """);
 
             statementCheckReservations.setInt(1, numRestaurant);
@@ -283,7 +283,12 @@ public class Serveur implements InterfaceResto {
 
             ResultSet resultSetReservations = statementCheckReservations.executeQuery();
 
-            int totalReservations = resultSetReservations.getInt("TOTAL");
+            int totalReservations;
+            if (!resultSetReservations.next()) {
+                totalReservations = 0;
+            } else {
+                totalReservations = resultSetReservations.getInt(1);
+            }
 
             res.put("nbReservations", totalReservations);
             res.put("nbPlaces", nbPlaces);
