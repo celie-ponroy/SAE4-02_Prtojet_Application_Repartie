@@ -1,4 +1,4 @@
-import {iconRestos, lastRestaurant} from "./index.js";
+import { iconRestos, lastRestaurant } from "./index.js";
 
 let formRestorant = function (event) {
     //récupération et affichage du template stationInfo
@@ -8,7 +8,7 @@ let formRestorant = function (event) {
     htmlFormResto.innerHTML = template({});
     document.getElementById("lat").value = event.latlng.lat;
     document.getElementById("lng").value = event.latlng.lng;
-    L.marker([event.latlng.lat, event.latlng.lng], {icon: iconRestos}).addTo(map)
+    L.marker([event.latlng.lat, event.latlng.lng], { icon: iconRestos }).addTo(map)
 }
 
 let formReserver = function () {
@@ -99,9 +99,14 @@ let callbackFormResto = async function (e) {
 
             if (response.ok) {
                 let jsonResponse = await response.json();
-                console.log('Restaurant créé avec succès:', jsonResponse);
-                // Submit apres succès
-                e.target.submit();
+                if (jsonResponse.error !== "") {
+                    console.error('Erreur lors de la création du restaurant:', jsonResponse.error);
+                    return alert(jsonResponse.error);
+                } else {
+                    alert('Restaurant créé avec succès');
+                    console.log('Restaurant créé avec succès:', jsonResponse);
+                    e.target.submit();
+                }
             } else {
                 console.error('Erreur lors de la création du restaurant:', response.statusText);
             }
@@ -186,9 +191,14 @@ let callbackFormReservationResto = async function (e) {
 
             if (response.ok) {
                 let jsonResponse = await response.json();
-                console.log('Réservation créé avec succès:', jsonResponse);
-                // Submit apres succès
-                e.target.submit();
+                if (jsonResponse.error !== "") {
+                    console.error('Erreur lors de la création de la réservation:', jsonResponse.error);
+                    return alert(jsonResponse.error);
+                } else {
+                    alert('Réservation créé avec succès');
+                    console.log('Réservation créé avec succès:', jsonResponse);
+                    e.target.submit();
+                }
             } else {
                 console.error('Erreur lors de la création de la réservation:', response.statusText);
             }

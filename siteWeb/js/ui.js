@@ -20,11 +20,12 @@ function displayInfosResto(resto) {
     let restoTemplate = document.getElementById("restoTemplate");
     let template = Handlebars.compile(restoTemplate.innerHTML);
     htmlResto.innerHTML = template({
-        nomResto : resto.name,
-        address : resto.address,
-        xGPS : resto.lat,
-        yGPS : resto.lon,
-        nbPlaces : resto.nbPlaces,
+        nomResto: resto.name,
+        address: resto.address,
+        xGPS: resto.lat,
+        yGPS: resto.lon,
+        nbPlaces: resto.nbPlaces,
+        nbReservations: resto.nbReservations,
     });
 }
 
@@ -32,13 +33,13 @@ function displayInfosTrafic(trafic) {
     let htmlTrafic = document.getElementById("stationInfo");
     let traficTemplate = document.getElementById("traficTemplate");
     let template = Handlebars.compile(traficTemplate.innerHTML);
-htmlTrafic.innerHTML = template({
-        shortDescription : trafic.shortDescription,
-        description : trafic.description,
-        dateDebut : trafic.dateDebut,
-        dateFin : trafic.dateFin,
-        adresse : trafic.adresse,
-        type : trafic.type,
+    htmlTrafic.innerHTML = template({
+        shortDescription: trafic.shortDescription,
+        description: trafic.description,
+        dateDebut: trafic.dateDebut,
+        dateFin: trafic.dateFin,
+        adresse: trafic.adresse,
+        type: trafic.type,
     });
 }
 
@@ -56,10 +57,10 @@ function displayInfosUniversite(universite) {
     let universiteTemplate = document.getElementById("universiteTemplate");
     let template = Handlebars.compile(universiteTemplate.innerHTML);
     htmlUniversite.innerHTML = template({
-        nomUniversite : universite.name,
-        adresse : universite.rue + ", " + universite.ville + ", " + universite.codePostal,
-        xGPS : universite.lat,
-        yGPS : universite.long,
+        nomUniversite: universite.name,
+        adresse: universite.rue + ", " + universite.ville + ", " + universite.codePostal,
+        xGPS: universite.lat,
+        yGPS: universite.long,
     });
 }
 
