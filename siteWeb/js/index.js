@@ -71,12 +71,32 @@ var iconUniversite = L.icon({
 // Fonction d'initialisation
 async function init() {
     // Initialisation de la carte
-    let map = L.map('map').setView([48.688135, 6.171586], 13);
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    const OSM = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 18,
         minZoom: 12,
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    }).addTo(map);
+    });
+
+    const stationsLayer = L.layerGroup();
+    const restaurantsLayer = L.layerGroup();
+    const traficLayer = L.layerGroup();
+    const universiteLayer = L.layerGroup(); 
+
+    const overlayMaps = {
+        "Stations de vélo": stationsLayer,
+        "Restaurants": restaurantsLayer,
+        "Trafic": traficLayer,
+        "Universités": universiteLayer,
+    };
+
+    let map = L.map('map', {
+        layers: [OSM, stationsLayer, restaurantsLayer, traficLayer, universiteLayer],
+        center: [48.688135, 6.171586],
+        zoom: 13
+    });
+
+    const layerControl = L.control.layers({}, overlayMaps).addTo(map);
+    layerControl.addBaseLayer(OSM, "OpenStreetMap");
 
 
     window.map = map; // Stocke la carte dans window pour accès global
@@ -108,7 +128,7 @@ async function init() {
                 // Définition de l'icône pour le marqueur actuellement cliqué
                 this.setIcon(iconVeloCourant);
                 lastClickedStation = this; // Mettre à jour le dernier marqueur cliqué pour les stations
-            }).addTo(map);
+            }).addTo(stationsLayer);
         });
     }
 
@@ -140,7 +160,7 @@ async function init() {
                 // Définition de l'icône pour le marqueur actuellement cliqué
                 this.setIcon(iconRestoCourant);
                 lastClickedRestaurant = this; // Mettre à jour le dernier marqueur cliqué pour les restaurants
-            }).addTo(map);
+            }).addTo(restaurantsLayer);
         });
     }
 
@@ -158,7 +178,7 @@ async function init() {
                 }
                 this.setIcon(iconTraficCourant)
                 lastClikedTrafic = this;
-            }).addTo(map)
+            }).addTo(traficLayer)
         });
     }
 
@@ -175,7 +195,7 @@ async function init() {
                 }
                 this.setIcon(iconUniversiteCourant)
                 lastClikedUniversite = this;
-            }).addTo(map)
+            }).addTo(universiteLayer)
         });
     }
 
