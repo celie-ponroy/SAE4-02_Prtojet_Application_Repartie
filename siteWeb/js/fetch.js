@@ -53,7 +53,6 @@ async function infoRestaurants() {
             let lon = restaurant.yGPS;
             restaurantList.push({ id, name, address, nbPlaces, lat, lon })
         })
-        console.log(restaurantList);
         return restaurantList;
     } catch (error) {
         alert('fetch error :' + error.message);
@@ -112,6 +111,27 @@ async function fetchMeteo() {
     }
 }
 
+async function infosUniversites() {
+    try {
+        let response = await fetch('https://data.enseignementsup-recherche.gouv.fr/api/explore/v2.1/catalog/datasets/fr-esr-implantations_etablissements_d_enseignement_superieur_publics/records?limit=50&refine=localisation%3A"Alsace%20-%20Champagne-Ardenne%20-%20Lorraine>Nancy-Metz>Meurthe-et-Moselle>Nancy"');
+        let universitesData = await response.json();
+
+        const universites = [];
+        universitesData.results.forEach(universite => {
+            const name = universite.implantation_lib;
+            const rue = universite.adresse_uai;
+            const codePostal = universite.code_postal_uai;
+            const ville = universite.localite_acheminement_uai;
+            const lat = universite.coordonnees.lat;
+            const long = universite.coordonnees.lon;
+            universites.push({ name, rue, codePostal, ville, lat, long });
+        });
+        return universites;
+    } catch (error) {
+        console.error('Erreur de fetch : ' + error.message);
+    }
+}
+
 
 async function infosTrafic(){
     try {
@@ -150,5 +170,6 @@ export default {
     infoStations,
     infoRestaurants,
     fetchMeteo,
-    infosTrafic
+    infosTrafic,
+    infosUniversites
 }

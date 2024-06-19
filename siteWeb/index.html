@@ -85,6 +85,15 @@
         </div>
     </script>
 
+    <script id="universiteTemplate" type="x-handlebars-template">
+        <h2>Université: </h2>
+        <div>
+            <h4><img src="img/universite_courant.png" alt="university" height="35" width="35"/>{{this.nomUniversite}}</h4>
+            <p><img src="img/gps.svg" alt="gps" height="30" width="30">{{this.adresse}}</p>
+            <p><b>lat : </b>{{this.xGPS}} , <b>long : </b>{{this.yGPS}}</p>
+        </div>
+    </script>
+
     <!-- Template pour la météo -->
     <script id="meteoTemplate" type="text/x-handlebars-template">
         {{#each temperatures}}

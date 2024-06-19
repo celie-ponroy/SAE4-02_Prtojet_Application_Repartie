@@ -51,9 +51,22 @@ function displayInfoMeteo(temperatures) {
     });
 }
 
+function displayInfosUniversite(universite) {
+    let htmlUniversite = document.getElementById("stationInfo");
+    let universiteTemplate = document.getElementById("universiteTemplate");
+    let template = Handlebars.compile(universiteTemplate.innerHTML);
+    htmlUniversite.innerHTML = template({
+        nomUniversite : universite.name,
+        adresse : universite.rue + ", " + universite.ville + ", " + universite.codePostal,
+        xGPS : universite.lat,
+        yGPS : universite.long,
+    });
+}
+
 export default {
     displayInfoStation: displayInfoStations,
     displayInfosTrafic,
     displayInfosResto,
-    displayInfoMeteo
+    displayInfoMeteo,
+    displayInfosUniversite
 }

@@ -51,6 +51,22 @@ var iconTrafic = L.icon({
     shadowAnchor: [22, 84]
 });
 
+var iconUniversiteCourant = L.icon({
+    iconUrl: './img/universite_courant.png',
+    iconSize: [40, 40],
+    popupAnchor: [-3, -76],
+    shadowSize: [68, 85],
+    shadowAnchor: [22, 84]
+});
+
+var iconUniversite = L.icon({
+    iconUrl: './img/icon_universite.png',
+    iconSize: [23, 40],
+    popupAnchor: [-3, -76],
+    shadowSize: [68, 85],
+    shadowAnchor: [22, 84]
+});
+
 
 // Fonction d'initialisation
 async function init() {
@@ -71,6 +87,7 @@ async function init() {
     let lastClickedStation;
     let lastClickedRestaurant;
     let lastClikedTrafic;
+    let lastClikedUniversite;
 
 
 // Récupération des infos des stations
@@ -141,6 +158,23 @@ async function init() {
                 }
                 this.setIcon(iconTraficCourant)
                 lastClikedTrafic = this;
+            }).addTo(map)
+        });
+    }
+
+    let infosUniversites = await fetch.infosUniversites();
+    if (infosUniversites !== undefined) {
+        infosUniversites.forEach(universite => {
+            let marker = L.marker([universite.lat, universite.long], {icon: iconUniversite});
+            marker.on('click', function () {
+                //affichage des infos du trafic apres un click
+                ui.displayInfosUniversite(universite)
+                //changement des icones du dernier et du nouveau marker clické
+                if (lastClikedUniversite !== undefined) {
+                    lastClikedUniversite.setIcon(iconUniversite)
+                }
+                this.setIcon(iconUniversiteCourant)
+                lastClikedUniversite = this;
             }).addTo(map)
         });
     }

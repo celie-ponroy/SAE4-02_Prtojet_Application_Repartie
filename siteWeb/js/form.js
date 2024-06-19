@@ -75,8 +75,6 @@ let callbackFormResto = async function (e) {
                 yGPS: lng.value
             };
 
-            console.log(resto);
-
             // Envoye requête POST au serveur
             let response = await fetch('http://localhost:8001/createRestaurant', {
                 method: 'POST',
