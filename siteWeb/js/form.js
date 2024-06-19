@@ -1,4 +1,5 @@
-import {iconRestos} from "./index.js";
+import {iconRestos, lastRestaurant} from "./index.js";
+
 let formRestorant = function (event) {
     //récupération et affichage du template stationInfo
     let htmlFormResto = document.getElementById("formResto");
@@ -7,7 +8,19 @@ let formRestorant = function (event) {
     htmlFormResto.innerHTML = template({});
     document.getElementById("lat").value = event.latlng.lat;
     document.getElementById("lng").value = event.latlng.lng;
-    L.marker([event.latlng.lat, event.latlng.lng],{icon:iconRestos}).addTo(map)
+    L.marker([event.latlng.lat, event.latlng.lng], {icon: iconRestos}).addTo(map)
+}
+
+let formReserver = function () {
+    //récupération et affichage du template stationInfo
+    let htmlStationInfo = document.getElementById("stationInfo");
+    let formReservationRestoTemplate = document.getElementById("reservationRestoTemplate");
+    let template = Handlebars.compile(formReservationRestoTemplate.innerHTML);
+    htmlStationInfo.innerHTML = template({
+        nomResto: lastRestaurant.name,
+        address: lastRestaurant.address,
+        nbPlaces: lastRestaurant.nbPlaces,
+    });
 }
 
 let callbackFormResto = async function (e) {
@@ -84,8 +97,6 @@ let callbackFormResto = async function (e) {
                 body: JSON.stringify(resto)
             });
 
-            console.log(response);
-
             if (response.ok) {
                 let jsonResponse = await response.json();
                 console.log('Restaurant créé avec succès:', jsonResponse);
@@ -100,7 +111,96 @@ let callbackFormResto = async function (e) {
     }
 }
 
+let callbackFormReservationResto = async function (e) {
+    e.preventDefault();
+
+    // Récupèration des champs du formulaire
+    let nomClient = document.getElementById('nomClient');
+    let prenomClient = document.getElementById('prenomClient');
+    let nbConvives = document.getElementById('nbConvives');
+    let numTel = document.getElementById('numTel');
+    let numRestaurant = lastRestaurant.id;
+    let date = document.getElementById('date');
+
+    // Récupèration des éléments permétant d'afficher les erreurs
+    let errorNomClient = document.getElementById('errorNomClient');
+    let errorPrenomClient = document.getElementById('errorPrenomClient');
+    let errorNbConvives = document.getElementById('errorNbConvives');
+    let errorNumTel = document.getElementById('errorNumTel');
+    let errorDate = document.getElementById('errorDate');
+
+    // Réinitialise des messages d'erreur
+    errorNomClient.textContent = '';
+    errorPrenomClient.textContent = '';
+    errorNbConvives.textContent = '';
+    errorNumTel.textContent = '';
+    errorDate.textContent = '';
+
+    let isValid = true;
+
+    // Vérification des différents champ
+
+    // Vérification des différents champs
+    if (nomClient.value.trim() === '') {
+        errorNomClient.textContent = 'Le champ "Nom du client" doit être rempli';
+        isValid = false;
+    }
+    if (prenomClient.value.trim() === '') {
+        errorPrenomClient.textContent = 'Le champ "Prénom du client" doit être rempli';
+        isValid = false;
+    }
+    if (nbConvives.value.trim() === '' || nbConvives.value <= 0) {
+        errorNbConvives.textContent = 'Le champ "Nombre de convives" doit être rempli avec une valeur positive';
+        isValid = false;
+    }
+    if (numTel.value.trim() === '' || !/^\d{10}$/.test(numTel.value)) {
+        errorNumTel.textContent = 'Le champ "Numéro de téléphone" doit être rempli avec un numéro valide de 10 chiffres';
+        isValid = false;
+    }
+    if (date.value.trim() === '') {
+        errorDate.textContent = 'Le champ "Date de réservation" doit être rempli';
+        isValid = false;
+    }
+
+    // Création dans la bdd
+    if (isValid) {
+        try {
+            // Resto avec données du formulaire
+            let reservation = {
+                nomClient: nomClient.value,
+                prenomClient: prenomClient.value,
+                nbConvives: nbConvives.value,
+                numTel: numTel.value,
+                numRestaurant: numRestaurant,
+                date: date.value
+            };
+
+            // Envoye requête POST au serveur
+            let response = await fetch('http://localhost:8001/setReservation', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json; charset=UTF-8',
+                },
+                body: JSON.stringify(reservation)
+            });
+
+            if (response.ok) {
+                let jsonResponse = await response.json();
+                console.log('Réservation créé avec succès:', jsonResponse);
+                // Submit apres succès
+                e.target.submit();
+            } else {
+                console.error('Erreur lors de la création de la réservation:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Erreur lors de la requête:', error);
+        }
+    }
+}
+
 export default {
     formRestorant,
     callbackFormResto,
+    formReserver,
+    callbackFormReservationResto,
 }

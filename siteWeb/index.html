@@ -14,142 +14,177 @@
 </head>
 
 <body>
-    <div class="sidebar">
-        <button onclick="showTab('accueil')">Accueil</button>
-        <button onclick="showTab('compteRendu')">Compte rendu</button>
+<div class="sidebar">
+    <button onclick="showTab('accueil')">Accueil</button>
+    <button onclick="showTab('compteRendu')">Compte rendu</button>
+</div>
+<div class="main-content" id="mainContent">
+    <!-- Barre de météo -->
+    <div id="meteoInfo" class="meteo-info-bar">
+        <div class="meteo-header">
+            <h2>Météo</h2>
+        </div>
+        <div class="meteo-content"></div>
     </div>
-    <div class="main-content" id="mainContent">
-        <!-- Barre de météo -->
-        <div id="meteoInfo" class="meteo-info-bar">
-            <div class="meteo-header">
-                <h2>Météo</h2>
-            </div>
-            <div class="meteo-content">
-            </div>
+    <!-- Contenu des onglets -->
+    <div id="accueil" class="tab-content" style="display: block;">
+        <div id="mapContainer">
+            <div id="map"></div>
+            <div id="stationInfo"></div>
         </div>
-
-        <!-- Contenu des onglets -->
-        <div id="accueil" class="tab-content" style="display: block;">
-            <div id="mapContainer">
-                <div id="map"></div>
-                <div id="stationInfo"></div>
-            </div>
-        </div>
-        <div id="compteRendu" class="tab-content" style="display: none;">
-            <h2>Compte rendu</h2>
-            <p>Contenu du compte rendu...
-                A completer
-            </p>
-        </div>
-        <div id="formResto"></div>
     </div>
-
-    <!-- Script Leaflet CSS -->
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-            crossorigin="" defer></script>
-    <!-- Script Template -->
-    <script id="stationTemplate" type="text/x-handlebars-template">
+    <div id="compteRendu" class="tab-content" style="display: none;">
+        <h2>Compte rendu</h2>
+        <p>Contenu du compte rendu...
+            A completer
+        </p>
+    </div>
+    <div id="formResto"></div>
+</div>
+<!-- Script Leaflet CSS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+        crossorigin="" defer></script>
+<!-- Script Template -->
+<script id="stationTemplate" type="text/x-handlebars-template">
+    <div class="nom">
         <h2>Stations Vlib: </h2>
+    </div>
+    <div>
+        <h4>{{this.name}} :</h4>
         <div>
-            <h4>{{this.name}} :</h4>
-            <div>
-                <img src="img/bike.svg" alt="vélo" height="15" width="15"/>
-                {{this.nbVelo}}
-                <img src="img/parking.svg" alt="docks" height="15" width="15"/>
-                {{this.nbDock}}
-            </div>
-            <div><p>Addresse : {{this.address}}</p></div>
+            <img src="img/bike.svg" alt="vélo" height="15" width="15"/>
+            {{this.nbVelo}}
+            <img src="img/parking.svg" alt="docks" height="15" width="15"/>
+            {{this.nbDock}}
         </div>
-    </script>
+        <div><p>Addresse : {{this.address}}</p></div>
+    </div>
+</script>
 
-    <script id="traficTemplate" type="text/x-handlebars-template">
-        <h2>Info Trafic: </h2>
-        <div>
-            <h4><img src="img/attention_panneau.png" alt="attention" height="35" width="35"> {{this.shortDescription}} :</h4>
-            <p>{{this.description}}</p>
-            <p><img src="img/gps.svg" alt="gps" height="30" width="30">{{this.adresse}}</p>
-            <p><b>Date de début : </b>{{this.dateDebut}}</p>
-            <p><b>Date de fin : </b> {{this.dateFin}}</p>
-            <p><b>Type : </b>{{this.type}}</p>
-        </div>
-    </script>
+<script id="traficTemplate" type="text/x-handlebars-template">
+    <h2>Info Trafic: </h2>
+    <div>
+        <h4><img src="img/attention_panneau.png" alt="attention" height="35" width="35">
+            {{this.shortDescription}} :
+        </h4>
+        <p>{{this.description}}</p>
+        <p><img src="img/gps.svg" alt="gps" height="30" width="30">{{this.adresse}}</p>
+        <p><b>Date de début : </b>{{this.dateDebut}}</p>
+        <p><b>Date de fin : </b> {{this.dateFin}}</p>
+        <p><b>Type : </b>{{this.type}}</p>
+    </div>
+</script>
 
-    <script id="restoTemplate" type="text/x-handlebars-template">
-        <h2>Restaurant: </h2>
-        <div>
-            <h4><img src="img/restaurant.png" alt="restaurant" height="35" width="35"/>{{this.nomResto}}</h4>
-            <p><img src="img/gps.svg" alt="gps" height="30" width="30">{{this.address}}</p>
-            <p><b>lat : </b>{{this.xGPS}} , <b>long : </b>{{this.yGPS}}</p>
-            <p><b>Nombre de places : </b>{{this.nbPlaces}}</p>
-        </div>
-    </script>
+<script id="restoTemplate" type="text/x-handlebars-template">
+    <h2>Restaurant: </h2>
+    <div>
+        <h4><img src="img/restaurant.png" alt="restaurant" height="35" width="35"/>{{this.nomResto}}</h4>
+        <p><img src="img/gps.svg" alt="gps" height="30" width="30">{{this.address}}</p>
+        <p><b>lat : </b>{{this.xGPS}} , <b>long : </b>{{this.yGPS}}</p>
+        <p><b>Nombre de places : </b>{{this.nbPlaces}}</p>
+        <button id="reservation">Reservation</button>
+    </div>
+</script>
 
-    <script id="universiteTemplate" type="x-handlebars-template">
-        <h2>Université: </h2>
-        <div>
-            <h4><img src="img/universite_courant.png" alt="university" height="35" width="35"/>{{this.nomUniversite}}</h4>
-            <p><img src="img/gps.svg" alt="gps" height="30" width="30">{{this.adresse}}</p>
-            <p><b>lat : </b>{{this.xGPS}} , <b>long : </b>{{this.yGPS}}</p>
-        </div>
-    </script>
+<!-- Template pour la météo -->
+<script id="meteoTemplate" type="text/x-handlebars-template">
+    {{#each temperatures}}
+    <div class="meteo-item">
+        <p><strong>{{time}}</strong></p>
+        <img src="{{icon}}" alt="icon" height="25" width="25"/>
+        <p>{{temperature}} °C</p>
+    </div>
+    {{/each}}
+</script>
 
-    <!-- Template pour la météo -->
-    <script id="meteoTemplate" type="text/x-handlebars-template">
-        {{#each temperatures}}
-        <div class="meteo-item">
-            <p><strong>{{time}}</strong></p>
-            <img src="{{icon}}" alt="icon" height="25" width="25"/>
-            <p>{{temperature}} °C</p>
-        </div>
-        {{/each}}
-    </script>
 
-    <script>
-        function showTab(tabId) {
-            var tabs = document.querySelectorAll('.tab-content');
-            tabs.forEach(tab => tab.style.display = 'none');
-            document.getElementById(tabId).style.display = 'block';
+<script id="universiteTemplate" type="x-handlebars-template">
+    <h2>Université: </h2>
+    <div>
+        <h4><img src="img/universite_courant.png" alt="university" height="35" width="35"/>{{this.nomUniversite}}
+        </h4>
+        <p><img src="img/gps.svg" alt="gps" height="30" width="30">{{this.adresse}}</p>
+        <p><b>lat : </b>{{this.xGPS}} , <b>long : </b>{{this.yGPS}}</p>
+    </div>
+</script>
 
-            // Si la carte est visible, redimensionner la carte pour s'adapter au conteneur
-            if (tabId === 'accueil') {
-                setTimeout(() => {
-                    if (window.map) {
-                        window.map.invalidateSize();
-                    }
-                }, 100); // Timeout pour attendre la fin du rendu
-            }
+<script>
+    function showTab(tabId) {
+        var tabs = document.querySelectorAll('.tab-content');
+        tabs.forEach(tab => tab.style.display = 'none');
+        document.getElementById(tabId).style.display = 'block';
+
+        // Si la carte est visible, redimensionner la carte pour s'adapter au conteneur
+        if (tabId === 'accueil') {
+            setTimeout(() => {
+                if (window.map) {
+                    window.map.invalidateSize();
+                }
+            }, 100); // Timeout pour attendre la fin du rendu
         }
-    </script>
+    }
+</script>
 
-    <script id="creationRestoTemplate" type="text/x-handlebars-template">
-        <h2>Création resto: </h2>
-        <form id="formRestoInTemplate">
-            <label>Nom du restaurant :</label></br>
-            <input type="text" id="nomResto"></br>
-            <span id="errorNomResto" style="color:red;"></span></br></br>
+<script id="creationRestoTemplate" type="text/x-handlebars-template">
+    <h2>Création resto: </h2>
+    <form id="formRestoInTemplate">
+        <label>Nom du restaurant :</label></br>
+        <input type="text" id="nomResto"></br>
+        <span id="errorNomResto" style="color:red;"></span></br></br>
 
-            <label>Adresse :</label></br>
-            <input type="text" id="adresse"></br>
-            <span id="errorAdresse" style="color:red;"></span></br></br>
+        <label>Adresse :</label></br>
+        <input type="text" id="adresse"></br>
+        <span id="errorAdresse" style="color:red;"></span></br></br>
 
-            <label>lat :</label></br>
-            <input type="text" id="lat"></br>
-            <span id="errorLat" style="color:red;"></span></br></br>
+        <label>lat :</label></br>
+        <input type="text" id="lat"></br>
+        <span id="errorLat" style="color:red;"></span></br></br>
 
-            <label>lng :</label></br>
-            <input type="text" id="lng"></br>
-            <span id="errorLng" style="color:red;"></span></br></br>
+        <label>lng :</label></br>
+        <input type="text" id="lng"></br>
+        <span id="errorLng" style="color:red;"></span></br></br>
 
-            <label>Nombre de places :</label></br>
-            <input type="number" id="nombrePlaces"></br>
-            <span id="errorNombrePlaces" style="color:red;"></span></br></br>
+        <label>Nombre de places :</label></br>
+        <input type="number" id="nombrePlaces"></br>
+        <span id="errorNombrePlaces" style="color:red;"></span></br></br>
+
+        <input type="submit" value="Valider">
+    </form>
+</script>
+
+<script id="reservationRestoTemplate" type="text/x-handlebars-template">
+    <h2>Restaurant: </h2>
+    <div>
+        <h4><img src="img/restaurant.png" alt="restaurant" height="35" width="35"/>{{this.nomResto}}</h4>
+        <p><img src="img/gps.svg" alt="gps" height="30" width="30">{{this.address}}</p>
+        <p><b>Nombre de places disponible: </b>{{this.nbPlaces}}</p>
+        <form id="formRestoReservationInTemplate">
+            <label for="nomClient">Nom:</label><br>
+            <input type="text" id="nomClient" name="nomClient" required><br>
+            <span id="errorNomClient" style="color:red;"></span><br><br>
+
+            <label for="prenomClient">Prénom:</label><br>
+            <input type="text" id="prenomClient" name="prenomClient" required><br>
+            <span id="errorPrenomClient" style="color:red;"></span><br><br>
+            <label for="nbConvives">Nombre de convives:</label><br>
+            <input type="number" id="nbConvives" name="nbConvives" required><br>
+            <span id="errorNbConvives" style="color:red;"></span><br><br>
+
+            <label for="numTel">Numéro de téléphone:</label><br>
+            <input type="tel" id="numTel" name="numTel" pattern="[0-9]{10}" required><br>
+            <span id="errorNumTel" style="color:red;"></span><br><br>
+
+            <label for="date">Date de réservation:</label><br>
+            <input type="date" id="date" name="date" required><br>
+            <span id="errorDate" style="color:red;"></span><br><br>
 
             <input type="submit" value="Valider">
         </form>
-    </script>
+    </div>
+</script>
 
-    <script src="js/index.js" type="module"></script>
+<script src="js/index.js" type="module"></script>
 
 </body>
 </html>

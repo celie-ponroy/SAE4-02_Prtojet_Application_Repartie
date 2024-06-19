@@ -66,7 +66,7 @@ var iconUniversite = L.icon({
     shadowSize: [68, 85],
     shadowAnchor: [22, 84]
 });
-
+export let lastRestaurant;
 
 // Fonction d'initialisation
 async function init() {
@@ -142,6 +142,17 @@ async function init() {
         form.callbackFormResto(event)
     });
 
+    //addEventListeneur pour reservation de réstaurant
+    document.getElementById("stationInfo").addEventListener('click', function (event) {
+        if(event.target.id == "reservation"){
+            form.formReserver();
+        }
+    });
+
+    document.getElementById("stationInfo").addEventListener("submit", (event) => {
+        form.callbackFormReservationResto(event);
+    });
+
 
 // Récupération des infos des restaurants
     let infoRestaurants = await fetch.infoRestaurants();
@@ -156,6 +167,8 @@ async function init() {
                 if (lastClickedRestaurant !== undefined) {
                     lastClickedRestaurant.setIcon(iconRestos);
                 }
+
+                lastRestaurant = restaurant;
 
                 // Définition de l'icône pour le marqueur actuellement cliqué
                 this.setIcon(iconRestoCourant);
