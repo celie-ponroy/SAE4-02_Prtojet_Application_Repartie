@@ -138,8 +138,9 @@ async function init() {
         form.formRestorant(event);
     });
 
-    document.getElementById("formResto").addEventListener("submit", (event) => {
-        form.callbackFormResto(event)
+    document.getElementById("stationInfo").addEventListener("submit", (event) => {
+        if (event.target.id == "formRestoInTemplate")
+            form.callbackFormResto(event)
     });
 
     //addEventListeneur pour reservation de réstaurant
@@ -150,7 +151,8 @@ async function init() {
     });
 
     document.getElementById("stationInfo").addEventListener("submit", (event) => {
-        form.callbackFormReservationResto(event);
+        if (event.target.id == "formRestoReservationInTemplate")
+            form.callbackFormReservationResto(event);
     });
 
 

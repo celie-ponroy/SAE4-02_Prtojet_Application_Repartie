@@ -2,7 +2,8 @@ import { iconRestos, lastRestaurant } from "./index.js";
 
 let formRestorant = function (event) {
     //récupération et affichage du template stationInfo
-    let htmlFormResto = document.getElementById("formResto");
+    // let htmlFormResto = document.getElementById("formResto");
+    let htmlFormResto = document.getElementById("stationInfo");
     let formRestoTemplate = document.getElementById("creationRestoTemplate");
     let template = Handlebars.compile(formRestoTemplate.innerHTML);
     htmlFormResto.innerHTML = template({});
