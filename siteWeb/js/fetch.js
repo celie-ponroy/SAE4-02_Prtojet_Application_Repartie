@@ -22,7 +22,7 @@ async function infoStations() {
             let status = statusStationJSON.data.stations.find(station => station.station_id === id);
             let nbDock = status !== undefined ? status.num_docks_available : "none";
             let nbVelo = status !== undefined ? status.num_bikes_available : "none";
-            stationList.push({name, lat, lon, id, nbDock, nbVelo, address})
+            stationList.push({ name, lat, lon, id, nbDock, nbVelo, address })
         })
         return stationList
     } catch (error) {
@@ -44,15 +44,28 @@ async function infoRestaurants() {
         }
 
         let restaurantList = [];
-        restaurantJSON.restaurants.forEach(restaurant => {
-            let id = restaurant.numResto;
-            let name = restaurant.nomResto;
-            let address = restaurant.adresse;
-            let nbPlaces = restaurant.nbPlaces;
-            let lat = restaurant.xGPS;
-            let lon = restaurant.yGPS;
-            restaurantList.push({ id, name, address, nbPlaces, lat, lon })
-        })
+        for (const restaurant of restaurantJSON.restaurants) {
+            let fetchReservations = await fetch('http://localhost:8001/getRestaurantNbReservations', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json; charset=UTF-8',
+                },
+                body: JSON.stringify({
+                    numRestaurant: restaurant.numResto,
+                    date: getCurrentFormattedDate().split(" ")[0]
+                })
+            });
+            let reservationsJSON = await fetchReservations.json();
+
+            const id = restaurant.numResto;
+            const name = restaurant.nomResto;
+            const address = restaurant.adresse;
+            const nbPlaces = restaurant.nbPlaces;
+            const lat = restaurant.xGPS;
+            const lon = restaurant.yGPS;
+            const nbReservations = reservationsJSON.nbReservations;
+            restaurantList.push({ id, name, address, nbPlaces, lat, lon, nbReservations })
+        }
         return restaurantList;
     } catch (error) {
         alert('fetch error :' + error.message);
@@ -85,11 +98,11 @@ async function fetchMeteo() {
 
                 // Sélection de l'icône en fonction du temps
                 let icon = 'soleil.png';
-                if (formattedTime == '05:00' ) {
+                if (formattedTime == '05:00') {
                     icon = 'aube.png';
                 } else if (formattedTime >= '21:00' || formattedTime <= '05:00') {
                     icon = 'lune.png';
-                }else if (pluie > 1) {
+                } else if (pluie > 1) {
                     icon = 'pluie.png';
                 } else if (nebulosity > 50) {
                     icon = 'nuage.png';
@@ -133,7 +146,7 @@ async function infosUniversites() {
 }
 
 
-async function infosTrafic(){
+async function infosTrafic() {
     try {
         let fetchTrafic = await fetch("http://localhost:8001/trafic");
         let traficJSON = await fetchTrafic.json();
@@ -157,7 +170,7 @@ async function infosTrafic(){
             let type = incident.type;
             let lat = polyline.split(" ")[0];
             let long = polyline.split(" ")[1];
-            traficList.push({id, shortDescription, description, dateDebut, dateFin, adresse, lat, long, type})
+            traficList.push({ id, shortDescription, description, dateDebut, dateFin, adresse, lat, long, type })
         })
         return traficList;
     } catch (error) {

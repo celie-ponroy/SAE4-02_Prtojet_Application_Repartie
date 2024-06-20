@@ -80,7 +80,7 @@ async function init() {
     const stationsLayer = L.layerGroup();
     const restaurantsLayer = L.layerGroup();
     const traficLayer = L.layerGroup();
-    const universiteLayer = L.layerGroup(); 
+    const universiteLayer = L.layerGroup();
 
     const overlayMaps = {
         "Stations de vélo": stationsLayer,
@@ -102,7 +102,7 @@ async function init() {
     window.map = map; // Stocke la carte dans window pour accès global
 
 
-// Variables pour stocker les derniers marqueurs cliqués
+    // Variables pour stocker les derniers marqueurs cliqués
 
     let lastClickedStation;
     let lastClickedRestaurant;
@@ -110,12 +110,12 @@ async function init() {
     let lastClikedUniversite;
 
 
-// Récupération des infos des stations
+    // Récupération des infos des stations
     let infoStations = await fetch.infoStations();
     if (infoStations !== undefined) {
         infoStations.forEach(station => {
             // Ajout des markers
-            let marker = L.marker([station.lat, station.lon], {icon: iconVelib});
+            let marker = L.marker([station.lat, station.lon], { icon: iconVelib });
             marker.on('click', function () {
                 // Affichage des infos de la station après un clic
                 ui.displayInfoStation(station);
@@ -144,7 +144,7 @@ async function init() {
 
     //addEventListeneur pour reservation de réstaurant
     document.getElementById("stationInfo").addEventListener('click', function (event) {
-        if(event.target.id == "reservation"){
+        if (event.target.id == "reservation") {
             form.formReserver();
         }
     });
@@ -154,11 +154,11 @@ async function init() {
     });
 
 
-// Récupération des infos des restaurants
+    // Récupération des infos des restaurants
     let infoRestaurants = await fetch.infoRestaurants();
     if (infoRestaurants !== undefined) {
-        infoRestaurants.forEach(restaurant => {
-            let marker = L.marker([restaurant.lat, restaurant.lon], {icon: iconRestos});
+        infoRestaurants.forEach(async restaurant => {
+            let marker = L.marker([restaurant.lat, restaurant.lon], { icon: iconRestos });
             marker.on('click', function () {
                 // Affichage des infos du restaurant après un clic
                 ui.displayInfosResto(restaurant);
@@ -181,7 +181,7 @@ async function init() {
     let infosTrafic = await fetch.infosTrafic();
     if (infosTrafic !== undefined) {
         infosTrafic.forEach(trafic => {
-            let marker = L.marker([trafic.lat, trafic.long], {icon: iconTrafic});
+            let marker = L.marker([trafic.lat, trafic.long], { icon: iconTrafic });
             marker.on('click', function () {
                 //affichage des infos du trafic apres un click
                 ui.displayInfosTrafic(trafic)
@@ -198,7 +198,7 @@ async function init() {
     let infosUniversites = await fetch.infosUniversites();
     if (infosUniversites !== undefined) {
         infosUniversites.forEach(universite => {
-            let marker = L.marker([universite.lat, universite.long], {icon: iconUniversite});
+            let marker = L.marker([universite.lat, universite.long], { icon: iconUniversite });
             marker.on('click', function () {
                 //affichage des infos du trafic apres un click
                 ui.displayInfosUniversite(universite)
