@@ -1,3 +1,11 @@
+/* Reset CSS */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
 /* Style de la barre de navigation */
 .sidebar {
     height: 100%;
@@ -28,7 +36,7 @@
 
 /* Style des boutons de la barre de navigation au survol */
 .sidebar button:hover {
-    background-color: #5c1ea83e;
+    background-color: #5c1ea8;
 }
 
 /* Style du contenu principal */
@@ -38,12 +46,16 @@
     padding-top: 135px; /* Ajustement pour laisser de la place à la barre météo */
     width: calc(100% - 170px);
     height: calc(100vh - 135px); /* Hauteur ajustée pour la barre météo */
-    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 
 /* Styles pour les onglets */
 .tab-content {
     display: none; /* Par défaut, masquer tous les onglets */
+    flex-grow: 1;
+    overflow: auto;
 }
 
 /* Conteneur de la carte et des infos */
@@ -51,14 +63,15 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    width: 100%;
+    width: 96%;
     height: 100%;
     padding: 20px;
+    overflow: auto;
 }
 
 /* Style de la carte */
 #map {
-    width: 70%; /* Largeur de la carte */
+    width: 77%; /* Largeur de la carte */
     height: 60vh; /* Hauteur de la carte */
     max-width: 800px;
     border: 1px solid hsl(282, 85%, 48%);
@@ -78,6 +91,20 @@
     overflow-y: auto; /* Permet de défiler si le contenu est trop grand */
 }
 
+/* Style pour le nom de la station */
+.nom {
+    padding: 10px;
+    font-size: 16px;
+    color: #333;
+    text-align: center;
+}
+
+/* Masquer l'élément "Compte rendu" dans l'onglet Accueil */
+#accueil .nom {
+    display: none;
+}
+
+
 /* Style de la barre météo */
 .meteo-info-bar {
     position: fixed;
@@ -95,7 +122,7 @@
     font-size: 18px;
 }
 
-/* Style du titre méteo */
+/* Style du titre météo */
 .meteo-header {
     flex: 1; /* Permet de remplir l'espace disponible */
     text-align: center; /* Centre le texte */
@@ -125,18 +152,85 @@
     border-right: none;
 }
 
-/* Global */
-html, body {
-    height: 100%;
-    margin: 0;
-    font-family: Arial, sans-serif;
+/* Style de l'iframe pour qu'elle occupe toute la page */
+#compteRendu {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    overflow: hidden; /* S'assure que rien ne déborde */
 }
 
-/* Style des icones pour la meteo */
-.meteo-item img {
+/* Style de l'iframe pour qu'elle occupe toute la page */
+#compteRendu iframe {
     display: block;
-    margin: 0 auto;
-    width: 25px; /* Largeur de l'icône */
-    height: 25px; /* Hauteur de l'icône */
-    margin-bottom: 5px;
+    width: 100%;
+    height: calc(100vh - 135px); /* Ajustement pour la barre de météo */
+    border: none;
+    flex-grow: 1;
+    margin: 0;
+    padding: 0;
+}
+
+/* Style du texte "By me" */
+.auteurs {
+    position: absolute;
+    bottom: 30px;
+    width: 100%;
+    text-align: left;
+    font-size: 14px;
+    color: #fff;
+}
+
+.nom h2 {
+    display: block; /* Assurez-vous que ce n'est pas 'none' */
+    visibility: visible; /* Assurez-vous que ce n'est pas 'hidden' */
+    color: #000; /* Assurez-vous que ce n'est pas la même couleur que le fond */
+}
+
+.nom.visible {
+    display: block; /* Affiche les contenus .nom ayant la classe .visible */
+}
+
+button {
+    background-color: #5c1ea8b5; /* Couleur de fond du bouton */
+    color: white; /* Couleur du texte */
+    border: none; /* Pas de bordure */
+    padding: 10px 15px; /* Espacement intérieur */
+    cursor: pointer; /* Curseur au survol */
+    font-size: 16px; /* Taille de police */
+    margin-top: 10px; /* Espacement en haut */
+}
+
+button:hover {
+    background-color: #5c1ea8; /* Couleur de fond plus foncée au survol */
+}
+
+/* Styles pour les formulaires */
+form {
+    margin-top: 20px;
+}
+
+label {
+    display: block; /* Affichage en bloc pour les labels */
+    margin-bottom: 5px; /* Espacement en bas */
+    font-weight: bold; /* Texte en gras */
+}
+
+input {
+    width: calc(100% - 20px); /* Largeur du champ de saisie */
+    padding: 8px; /* Espacement intérieur */
+    margin-bottom: 10px; /* Espacement en bas */
+    border: 1px solid #ddd; /* Bordure légère */
+    border-radius: 4px; /* Coins arrondis */
+    box-sizing: border-box; /* Boîte de modèle de contenu */
+}
+
+input:focus {
+    outline: none; /* Pas de contour de focus */
+    border-color: #5c1ea8; /* Couleur de la bordure au focus */
+}
+
+/* Message d'erreur */
+span {
+    font-size: 14px; /* Taille de police plus petite pour les messages d'erreur */
 }
